@@ -1,0 +1,9 @@
+{
+    "database" : {
+        "sgbd" : "mysql",
+        "host" : "localhost",
+        "dbname" : "softdoc",
+        "username" : "root",
+        "password" : ""
+    }
+}
