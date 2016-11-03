@@ -13,19 +13,6 @@
                 <div class="panel-body">
                     <div class="resultado"></div>
 
-                    <div class="alert alert-info" role="alert">
-                        <i class="fa fa-user"></i> Username: <strong>admin</strong><br>
-                        <i class="fa fa-key"></i> Password: <strong>admin123</strong><br>
-                        <i class="fa fa-level-up"></i> Level: <strong>1 - Administrador</strong>
-                    </div>
-
-                    <div class="alert alert-danger" role="alert">
-                        <i class="fa fa-user"></i> Username: <strong>teste</strong><br>
-                        <i class="fa fa-key"></i> Password: <strong>teste123</strong><br>
-                        <i class="fa fa-level-up"></i> Level: <strong>2 - Normal</strong><br>
-                        <i class="fa fa-ban"></i><strong> Bloqueado</strong><br>
-                    </div>
-
                     <form role="form" id="form" action="{{$controller}}autentica" method="post">
                         {!!$token!!}
                         <fieldset>

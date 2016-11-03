@@ -23,7 +23,7 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="resultado"></div>
-                        <form action="{{$ontroller}}registra/" method="post" id="form">
+                        <form action="{{$controller}}registra/" method="post" id="form">
                             {!!$token!!}
                             <input type="hidden" name="id">
                             <div class="row">
@@ -34,7 +34,7 @@
                                         <input type="text"
                                                class="form-control"
                                                name="username"
-                                               maxlength="10"
+                                               maxlength="20"
                                                placeholder="Login do Usuário - Username"
                                                id="username"
                                                required>
@@ -53,8 +53,8 @@
 
                                     <div class="form-group">
                                         <label>Nível de Acesso</label>
-                                        <select name="nivel"
-                                                id="nivel"
+                                        <select name="level"
+                                                id="level"
                                                 class="form-control"
                                                 required>
                                             <option value="1">1-Administrador</option>
