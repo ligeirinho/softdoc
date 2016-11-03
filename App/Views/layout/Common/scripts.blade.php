@@ -10,6 +10,9 @@
 <!-- Mask Plugin JavaScript -->
 <script src="{{ATTACH}}jqueryMask/jquery.mask.min.js"></script>
 
+<!-- jQuery Form Plugin JavaScript -->
+<script src="{{ATTACH}}jqueryForm/jquery.form.js"></script>
+
 <!-- Custom Theme JavaScript -->
 <script src="{{DIRJS_}}sb-admin-2.js"></script>
 <!-- Script padrão de envio de formulário -->
@@ -34,24 +37,30 @@
         }
     }
 
-    $(document).ready(function() {
-        $('#form').submit(function() {
-            
-            var dados = $(this).serialize();
+    (function () {
+    var status = $(".resultado");
 
-            $(".resultado").html("<i class='fa fa-spinner fa-spin'></i> Enviando...<span class='sr-only'>Enviando...</span>");
-            
-            $.ajax({
-                type: "POST", // Tipo de metodo
-                url: $(this).attr("action"), //Recebe o valor da action do form
-                data: dados,
-                success: function(data) //Se tiver sucesso...
-                {
-                    $(".resultado").html(data);
-                }
-            });
-            return false;
-        });
-        //Requisita
+    $('#form').ajaxForm({
+        beforeSend: function () {
+            status.empty();
+            status.html("<i class='fa fa-spinner fa-spin'></i> Enviando...<span class='sr-only'>Enviando...</span>");
+        },
+//        uploadProgress: function (event, position, total, percentComplete) {
+//            var percentVal = percentComplete + '%';
+//            bar.width(percentVal);
+//            percent.html(percentVal);
+//        },
+//        success: function () {
+//            var percentVal = '100%';
+//            bar.width(percentVal);
+//            percent.html(percentVal);
+//        },
+        complete: function (xhr) {
+            status.html(xhr.responseText);
+        }
     });
+    
+    @yield('scripts')
+
+})();
 </script>
