@@ -41,7 +41,7 @@ class AuthController extends Controller implements CtrlInterface
     {
         // Inicia a proteção das páginas com permissão de acesso apenas para
         // usuários autenticados com o nível 1.
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1]);
+        //$this->view['userLoggedIn'] = $this->access->authenticAccess([1]);
         
         // Renderiza a página
         $this->render('Auth.form_novo');
@@ -91,7 +91,7 @@ class AuthController extends Controller implements CtrlInterface
     {
         // Inicia a proteção das páginas com permissão de acesso apenas para
         // usuários autenticados com o nível 1.
-        $this->access->authenticAccess([1]);
+        //$this->access->authenticAccess([1]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->novo();
