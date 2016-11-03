@@ -31,7 +31,7 @@ define('STRSAL', 'c799fe780aa9e4fc495b09d20763c7858f26cb45');
 // para a correta instalação da aplicação.
 define('DOMAIN', 'localhost');
 // Contato do Administrador do Sistema
-define('ADCONT', 'E-Mail: bruno.monteirodg@gmail.com;<br>Fone: +55 91 99913-7954');
+define('ADCONT', 'E-Mail: seplan@pa.gov.br;<br>Fone: +55 91 3321-4975');
 // Define o nome da entidade (tabela do Banco de Dados) usada para login
 define('ENTLOG', 'auth');
 // Rota padrão para o formulário de login
@@ -59,7 +59,7 @@ define('DATADR' , DRINST . 'App/Database/DbRepository/');
 // Diretório padrão onde serão salvos os arquivos de outras bibliotecas
 define('ATTACH' , APPDIR . 'vendor/');
 // Diretório padrão onde serão salvos as páginas de erro
-define('ERRPAG' , 'attach/ErrorPag/');
+define('ERRPAG' , 'vendor/ErrorPag/');
 // Diretório padrão onde serão salvos os arquivos Javascript
 define('DIRJS_' , APPDIR . 'js/');
 // Diretório padrão onde serão salvos os arquivos CSS
