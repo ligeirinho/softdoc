@@ -1,12 +1,12 @@
 <!--
- * @view documentos/index.blade.php
- * @created at 03-11-2016 12:49:36
+ * @view tipos/index.blade.php
+ * @created at 03-11-2016 12:53:21
  * - Criado Automaticamente pelo HTR Assist
  -->
 
 @extends('layout.default')
 
-@section('title', 'Lista de Documentos')
+@section('title', 'Lista de Tipos')
 
 @section('content')
 <!-- Page Content -->
@@ -14,36 +14,26 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h3>Documentos</h3>
-                <i class="fa fa-list"></i> Lista de Documentos<br>
+                <h3>Tipos</h3>
+                <i class="fa fa-list"></i> Lista de Tipos<br>
                 <a href="{{$controller}}novo/" class="btn btn-info">
                     <i class="fa fa-plus"></i> Novo Registro
                 </a>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Título</th>
-                            <th>Usuário</th>
-                            <th>Log</th>
-                            <th>Extensão</th>
-                            <th>Revisão</th>
-                            <th>Tamanho</th>
-                            <th>Departamento</th>
-                            <th>Classificação</th>
+                            <th>Tipo</th>
+                            <th>Criado</th>
+                            <th>Atualizado</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($result as $value)
                         <tr>
-                            <td>{{$value['titulo']}}</td>
-                            <td>{{$value['user_id']}}</td>
-                            <td>{{$value['log_id']}}</td>
-                            <td>{{$value['extensao']}}</td>
-                            <td>{{$value['revisao']}}</td>
-                            <td>{{$value['tamanho']}}</td>
-                            <td>{{$value['departamento']}}</td>
-                            <td>{{$value['classificacao_id']}}</td>
+                            <td>{{$value['nome_tipo']}}</td>
+                            <td>{{$value['criado']}}</td>
+                            <td>{{$value['atualizado']}}</td>
                             <td>
                                 <a href="{{$controller}}editar/id/{{$value['id']}}" class="btn btn-success">
                                     <i class="fa fa-edit"></i> Editar

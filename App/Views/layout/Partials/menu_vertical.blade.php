@@ -27,6 +27,42 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <li>
+                            <a href="#"><i class="fa fa-book fa-fw"></i> Documentos<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{APPDIR}}documentos/"><i class="fa fa-cogs fa-fw"></i> Gerenciar Documentos</a>
+                                </li>
+                                <li>
+                                    <a href="{{APPDIR}}documentos/novo/"><i class="fa fa-plus-circle fa-fw"></i> Novo Documento</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-list-alt fa-fw"></i> Classificação<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{APPDIR}}classificacao/"><i class="fa fa-cogs fa-fw"></i> Gerenciar Classificação</a>
+                                </li>
+                                <li>
+                                    <a href="{{APPDIR}}classificacao/novo/"><i class="fa fa-plus-circle fa-fw"></i> Nova Classificação</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-list-ol fa-fw"></i> Tipos<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{APPDIR}}tipos/"><i class="fa fa-cogs fa-fw"></i> Gerenciar Tipos</a>
+                                </li>
+                                <li>
+                                    <a href="{{APPDIR}}tipos/novo/"><i class="fa fa-plus-circle fa-fw"></i> Novo Tipo</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

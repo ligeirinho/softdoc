@@ -1,7 +1,7 @@
 <?php
 /**
- * @Controller DocumentosController
- * @Created at 03-11-2016 12:49:33
+ * @Controller TiposController
+ * @Created at 03-11-2016 12:53:18
  * - Criado Automaticamente pelo HTR Assist
  */
 
@@ -10,9 +10,9 @@ namespace App\Controllers;
 use HTR\System\ControllerAbstract as Controller;
 use HTR\Interfaces\ControllerInterface;
 use HTR\Helpers\Access\Access;
-use App\Models\DocumentosModel;
+use App\Models\TiposModel;
 
-class DocumentosController extends Controller implements ControllerInterface
+class TiposController extends Controller implements ControllerInterface
 {
     // Model padrão usado para este Controller
     private $modelDefault;
@@ -24,9 +24,9 @@ class DocumentosController extends Controller implements ControllerInterface
     {
         parent::__construct();
 
-        $this->view['controller'] = APPDIR . 'documentos/';
+        $this->view['controller'] = APPDIR . 'tipos/';
 
-        $this->modelDefault = DocumentosModel::class;
+        $this->modelDefault = TiposModel::class;
 
         // Instancia o Helper que auxilia na proteção de páginas e autenticação de usuários
         $this->access = new Access();
@@ -48,7 +48,7 @@ class DocumentosController extends Controller implements ControllerInterface
     public function novoAction()
     {
 
-        $this->render('documentos.form_novo');
+        $this->render('tipos.form_novo');
     }
 
     /**
@@ -61,7 +61,7 @@ class DocumentosController extends Controller implements ControllerInterface
 
 
         $this->view['result'] = $model->findById($this->getParam('id'));
-        $this->render('documentos.form_editar');
+        $this->render('tipos.form_editar');
     }
 
     /**
@@ -87,7 +87,7 @@ class DocumentosController extends Controller implements ControllerInterface
         $this->view['result'] = $model->getResultadoPaginator();
         $this->view['btn'] = $model->getNavePaginator();
 
-        $this->render('documentos.index');
+        $this->render('tipos.index');
     }
 
     /**

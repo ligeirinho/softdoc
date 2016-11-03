@@ -1,6 +1,6 @@
 <!--
  * @view documentos/form_novo.blade.php
- * @created at 01-11-2016 15:59:31
+ * @created at 03-11-2016 12:49:38
  * - Criado Automaticamente pelo HTR Assist
  -->
 
@@ -35,41 +35,41 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Titulo</label>
+                                    <label>Título</label>
                                     <input type="text"
                                            id="titulo"
                                            name="titulo"
-                                           placeholder="Titulo"
+                                           placeholder="Título"
                                            class="form-control"
                                            maxlength="70"
                                            required>
                                 </div>
                                 <div class="form-group">
-                                    <label>UserId</label>
+                                    <label>Usuário</label>
                                     <input type="text"
                                            id="user_id"
                                            name="user_id"
-                                           placeholder="UserId"
+                                           placeholder="Usuário"
                                            class="form-control"
                                            maxlength="5"
                                            required>
                                 </div>
                                 <div class="form-group">
-                                    <label>LogId</label>
+                                    <label>Log</label>
                                     <input type="text"
                                            id="log_id"
                                            name="log_id"
-                                           placeholder="LogId"
+                                           placeholder="Log"
                                            class="form-control"
                                            maxlength="5"
                                            required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Extensao</label>
+                                    <label>Extensão</label>
                                     <input type="text"
                                            id="extensao"
                                            name="extensao"
-                                           placeholder="Extensao"
+                                           placeholder="Extensão"
                                            class="form-control"
                                            maxlength="10"
                                            >
@@ -78,11 +78,11 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Revisao</label>
+                                    <label>Revisão</label>
                                     <input type="text"
                                            id="revisao"
                                            name="revisao"
-                                           placeholder="Revisao"
+                                           placeholder="Revisão"
                                            class="form-control"
                                            maxlength="11"
                                            >
@@ -108,11 +108,11 @@
                                            required>
                                 </div>
                                 <div class="form-group">
-                                    <label>ClassificacaoId</label>
+                                    <label>Classificação</label>
                                     <input type="text"
                                            id="classificacao_id"
                                            name="classificacao_id"
-                                           placeholder="ClassificacaoId"
+                                           placeholder="Classificação"
                                            class="form-control"
                                            maxlength="5"
                                            required>

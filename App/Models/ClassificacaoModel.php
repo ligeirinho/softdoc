@@ -1,7 +1,7 @@
 <?php
 /**
- * @model DocumentosModel
- * @created at 03-11-2016 12:49:34
+ * @model ClassificacaoModel
+ * @created at 03-11-2016 12:50:59
  * - Criado Automaticamente pelo HTR Assist
  */
 
@@ -12,23 +12,20 @@ use HTR\Helpers\Mensagem\Mensagem as msg;
 use HTR\Helpers\Paginator\Paginator;
 use HTR\System\Security;
 
-class DocumentosModel extends ModelCRUD
+class ClassificacaoModel extends ModelCRUD
 {
-    use \App\Validators\DocumentosValidatorTrait;
+    use \App\Validators\ClassificacaoValidatorTrait;
 
     /**
      * Entidade padrão do Model
      */
-    protected $entidade = 'documentos';
+    protected $entidade = 'classificacao';
     protected $id;
-    protected $titulo;
-    protected $userId;
-    protected $logId;
-    protected $extensao;
-    protected $revisao;
-    protected $tamanho;
+    protected $nomeClassificacao;
     protected $departamento;
-    protected $classificacaoId;
+    protected $criado;
+    protected $alterado;
+    protected $usuarioId;
 
     private $resultadoPaginator;
     private $navePaginator;
@@ -107,14 +104,11 @@ class DocumentosModel extends ModelCRUD
         $this->notDuplicate();
 
        $dados = [
-          'titulo' => $this->getTitulo(),
-          'user_id' => $this->getUserId(),
-          'log_id' => $this->getLogId(),
-          'extensao' => $this->getExtensao(),
-          'revisao' => $this->getRevisao(),
-          'tamanho' => $this->getTamanho(),
+          'nome_classificacao' => $this->getNomeClassificacao(),
           'departamento' => $this->getDepartamento(),
-          'classificacao_id' => $this->getClassificacaoId(),
+          'criado' => $this->getCriado(),
+          'alterado' => $this->getAlterado(),
+          'usuario_id' => $this->getUsuarioId(),
         ];
 
         if ($this->insert($dados)) {
@@ -136,14 +130,11 @@ class DocumentosModel extends ModelCRUD
         $this->notDuplicate();
 
        $dados = [
-          'titulo' => $this->getTitulo(),
-          'user_id' => $this->getUserId(),
-          'log_id' => $this->getLogId(),
-          'extensao' => $this->getExtensao(),
-          'revisao' => $this->getRevisao(),
-          'tamanho' => $this->getTamanho(),
+          'nome_classificacao' => $this->getNomeClassificacao(),
           'departamento' => $this->getDepartamento(),
-          'classificacao_id' => $this->getClassificacaoId(),
+          'criado' => $this->getCriado(),
+          'alterado' => $this->getAlterado(),
+          'usuario_id' => $this->getUsuarioId(),
         ];
 
         if ($this->update($dados, $this->getId())) {
@@ -157,7 +148,7 @@ class DocumentosModel extends ModelCRUD
     public function remover($id)
     {
         if ($this->delete($id)) {
-            header('Location: ' . APPDIR . 'documentos/visualizar/');
+            header('Location: ' . APPDIR . 'classificacao/visualizar/');
         }
     }
 
@@ -166,89 +157,19 @@ class DocumentosModel extends ModelCRUD
      */
     private function notDuplicate()
     {
-        // Não deixa duplicar os valores do campo titulo
+        // Não deixa duplicar os valores do campo nome_classificacao
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
                 ->setFilters()
                 ->where('id', '!=', $this->getId())
                 ->whereOperator('AND')
-                ->where('titulo', '=' , $this->getTitulo());
+                ->where('nome_classificacao', '=' , $this->getNomeClassificacao());
         $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
 
         if ($result) {
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Título</strong>.'
-                . '<script>focusOn("titulo")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo user_id
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('user_id', '=' , $this->getUserId());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Usuário</strong>.'
-                . '<script>focusOn("user_id")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo log_id
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('log_id', '=' , $this->getLogId());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Log</strong>.'
-                . '<script>focusOn("log_id")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo extensao
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('extensao', '=' , $this->getExtensao());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Extensão</strong>.'
-                . '<script>focusOn("extensao")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo revisao
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('revisao', '=' , $this->getRevisao());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Revisão</strong>.'
-                . '<script>focusOn("revisao")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo tamanho
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('tamanho', '=' , $this->getTamanho());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Tamanho</strong>.'
-                . '<script>focusOn("tamanho")</script>', 'warning');
+                . '<strong>Classificação</strong>.'
+                . '<script>focusOn("nome_classificacao")</script>', 'warning');
         }
         // Não deixa duplicar os valores do campo departamento
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
@@ -264,19 +185,47 @@ class DocumentosModel extends ModelCRUD
                 . '<strong>Departamento</strong>.'
                 . '<script>focusOn("departamento")</script>', 'warning');
         }
-        // Não deixa duplicar os valores do campo classificacao_id
+        // Não deixa duplicar os valores do campo criado
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
                 ->setFilters()
                 ->where('id', '!=', $this->getId())
                 ->whereOperator('AND')
-                ->where('classificacao_id', '=' , $this->getClassificacaoId());
+                ->where('criado', '=' , $this->getCriado());
         $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
 
         if ($result) {
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Classificação</strong>.'
-                . '<script>focusOn("classificacao_id")</script>', 'warning');
+                . '<strong>Criado</strong>.'
+                . '<script>focusOn("criado")</script>', 'warning');
+        }
+        // Não deixa duplicar os valores do campo alterado
+        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
+                ->setFields(['id'])
+                ->setFilters()
+                ->where('id', '!=', $this->getId())
+                ->whereOperator('AND')
+                ->where('alterado', '=' , $this->getAlterado());
+        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result) {
+            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
+                . '<strong>Alterado</strong>.'
+                . '<script>focusOn("alterado")</script>', 'warning');
+        }
+        // Não deixa duplicar os valores do campo usuario_id
+        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
+                ->setFields(['id'])
+                ->setFilters()
+                ->where('id', '!=', $this->getId())
+                ->whereOperator('AND')
+                ->where('usuario_id', '=' , $this->getUsuarioId());
+        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result) {
+            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
+                . '<strong>Usuário</strong>.'
+                . '<script>focusOn("usuario_id")</script>', 'warning');
         }
     }
 
@@ -287,25 +236,19 @@ class DocumentosModel extends ModelCRUD
     {
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
-        $this->setTitulo(filter_input(INPUT_POST, 'titulo'));
-        $this->setUserId(filter_input(INPUT_POST, 'user_id'));
-        $this->setLogId(filter_input(INPUT_POST, 'log_id'));
-        $this->setExtensao(filter_input(INPUT_POST, 'extensao'));
-        $this->setRevisao(filter_input(INPUT_POST, 'revisao'));
-        $this->setTamanho(filter_input(INPUT_POST, 'tamanho'));
+        $this->setNomeClassificacao(filter_input(INPUT_POST, 'nome_classificacao'));
         $this->setDepartamento(filter_input(INPUT_POST, 'departamento'));
-        $this->setClassificacaoId(filter_input(INPUT_POST, 'classificacao_id'));
+        $this->setCriado(filter_input(INPUT_POST, 'criado'));
+        $this->setAlterado(filter_input(INPUT_POST, 'alterado'));
+        $this->setUsuarioId(filter_input(INPUT_POST, 'usuario_id'));
 
         // Inicia a Validação dos dados
         $this->validateId();
-        $this->validateTitulo();
-        $this->validateUserId();
-        $this->validateLogId();
-        $this->validateExtensao();
-        $this->validateRevisao();
-        $this->validateTamanho();
+        $this->validateNomeClassificacao();
         $this->validateDepartamento();
-        $this->validateClassificacaoId();
+        $this->validateCriado();
+        $this->validateAlterado();
+        $this->validateUsuarioId();
     }
 
     private function setId($value)

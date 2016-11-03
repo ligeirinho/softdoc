@@ -1,12 +1,12 @@
 <!--
- * @view  documentos/index.blade.php
- * @created  at 03-11-2016 12:49:36
+ * @view  departamento/index.blade.php
+ * @created  at 03-11-2016 12:52:12
  * - Criado Automaticamente pelo HTR Assist
  -->
 
 
 
-<?php $__env->startSection('title', 'Lista de Documentos'); ?>
+<?php $__env->startSection('title', 'Lista de Departamento'); ?>
 
 <?php $__env->startSection('content'); ?>
 <!-- Page Content -->
@@ -14,36 +14,22 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h3>Documentos</h3>
-                <i class="fa fa-list"></i> Lista de Documentos<br>
+                <h3>Departamento</h3>
+                <i class="fa fa-list"></i> Lista de Departamento<br>
                 <a href="<?php echo e($controller); ?>novo/" class="btn btn-info">
                     <i class="fa fa-plus"></i> Novo Registro
                 </a>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Título</th>
-                            <th>Usuário</th>
-                            <th>Log</th>
-                            <th>Extensão</th>
-                            <th>Revisão</th>
-                            <th>Tamanho</th>
                             <th>Departamento</th>
-                            <th>Classificação</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $__currentLoopData = $result; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getFirstLoop(); ?>
                         <tr>
-                            <td><?php echo e($value['titulo']); ?></td>
-                            <td><?php echo e($value['user_id']); ?></td>
-                            <td><?php echo e($value['log_id']); ?></td>
-                            <td><?php echo e($value['extensao']); ?></td>
-                            <td><?php echo e($value['revisao']); ?></td>
-                            <td><?php echo e($value['tamanho']); ?></td>
-                            <td><?php echo e($value['departamento']); ?></td>
-                            <td><?php echo e($value['classificacao_id']); ?></td>
+                            <td><?php echo e($value['nome_departamento']); ?></td>
                             <td>
                                 <a href="<?php echo e($controller); ?>editar/id/<?php echo e($value['id']); ?>" class="btn btn-success">
                                     <i class="fa fa-edit"></i> Editar
