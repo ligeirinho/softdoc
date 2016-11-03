@@ -75,6 +75,32 @@ class DocumentosModel extends ModelCRUD
         // Links para criação do menu de navegação da paginação @return array
         $this->navePaginator = $paginator->getNaveBtn();
     }
+    
+    private function upload($dados, $id)
+    {
+        if (!$dados) {
+            return;
+        }
+
+        if (!isset($dados['arquivo'])) {
+            return;
+        }
+
+        if ($dados['arquivo']['type'] != 'application/pdf') {
+            msg::showMsg('O arquivo de publicação deve ser no formato PDF. '
+                . '<strong>Extensão *.jpg</strong>.', 'danger');
+        }
+
+        if ($dados['arquivo']['size'] == 0) {
+            msg::showMsg('Ocorreu um erro ao enviar o arquivo de puplicação.'
+                . 'Verifique se o tamanho da imagem ultrapassa <strong>10MB</strong>.', 'danger');
+        }
+
+        if (!move_uploaded_file($dados['arquivo']['tmp_name'], 'files_uploads/' . $id . '.pdf')) {
+            msg::showMsg('Ocorreu um erro ao salvar o arquivo de publicação.'
+                . 'Verifique sua conexão com a internet.', 'danger');
+        }
+    }
 
 
     /**
@@ -110,14 +136,19 @@ class DocumentosModel extends ModelCRUD
           'titulo' => $this->getTitulo(),
           'user_id' => $this->getUserId(),
           'log_id' => $this->getLogId(),
-          'extensao' => $this->getExtensao(),
+          'extensao' => $_FILES['arquivo']['type'],
           'revisao' => $this->getRevisao(),
-          'tamanho' => $this->getTamanho(),
+          'tamanho' => $_FILES['arquivo']['size'],
           'departamento' => $this->getDepartamento(),
           'classificacao_id' => $this->getClassificacaoId(),
         ];
 
         if ($this->insert($dados)) {
+            
+            $id = $this->pdo->lastInsertId();
+
+            $this->upload($_FILES, $id);
+
             msg::showMsg('111', 'success');
         }
     }

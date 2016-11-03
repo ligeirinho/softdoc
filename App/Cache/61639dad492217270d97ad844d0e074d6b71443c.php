@@ -1,14 +1,14 @@
 <!--
- * @view classificacao/form_novo.blade.php
- * @created at 03-11-2016 12:51:02
+ * @view  classificacao/form_novo.blade.php
+ * @created  at 03-11-2016 12:51:02
  * - Criado Automaticamente pelo HTR Assist
  -->
 
-@extends('layout.default')
 
-@section('title', 'Inserção de Classificacao')
 
-@section('content')
+<?php $__env->startSection('title', 'Inserção de Classificacao'); ?>
+
+<?php $__env->startSection('content'); ?>
 <!-- Page Content -->
 <div id="page-wrapper">
     <div class="container-fluid">
@@ -30,8 +30,9 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="resultado"></div>
-                        <form action="{{$controller}}registra/" method="post" id="form">
-                            {!!$token!!}
+                        <form action="<?php echo e($controller); ?>registra/" method="post" id="form">
+                            <?php echo $token; ?>
+
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -51,17 +52,18 @@
                                            name="departamento"
                                            class="form-control"
                                            required>
-                                           @foreach ($resultDepartamento as $value)
-                                           <option value="{{$value['id']}}">
-                                               {{$value['nome']}}
+                                           <?php $__currentLoopData = $resultDepartamento; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getFirstLoop(); ?>
+                                           <option value="<?php echo e($value['id']); ?>">
+                                               <?php echo e($value['nome']); ?>
+
                                            </option>
-                                           @endforeach
+                                           <?php endforeach; $__env->popLoop(); $loop = $__env->getFirstLoop(); ?>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <br>
                                     <button class="btn btn-primary"><i class="fa fa-check"></i> Registrar</button>
-                                    <a href="{{$controller}}" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Voltar</a>
+                                    <a href="<?php echo e($controller); ?>" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Voltar</a>
                                 </div>
                             </div>
                         </div>
@@ -77,4 +79,5 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

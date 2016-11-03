@@ -93,8 +93,8 @@ class AuthModel extends CRUD
             'level' => $this->getLevel(),
             COLMOP => 1,
             'active' => 1, // 1-ativo; 0-inativo  Default : 1
-            'created_at' => $this->getTime(),
-            'updated_at' => $this->getTime()
+            'created_at' => time(),
+            'updated_at' => time()
         ];
 
         if ($this->insert($dados)) {
@@ -127,7 +127,7 @@ class AuthModel extends CRUD
             'email' => $this->getEmail(),
             'level' => $this->getLevel(),
             'active' => $this->getActive(), // 1-ativo; 0-inativo  Default : 1
-            'updated_at' => $this->getTime()
+            'updated_at' => time()
         ];
 
         if ($this->getPassword()) {
