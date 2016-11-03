@@ -11,6 +11,7 @@ use HTR\System\ControllerAbstract as Controller;
 use HTR\Interfaces\ControllerInterface;
 use HTR\Helpers\Access\Access;
 use App\Models\ClassificacaoModel;
+use App\Models\DepartamentoModel as Departamento;
 
 class ClassificacaoController extends Controller implements ControllerInterface
 {
@@ -47,7 +48,9 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function novoAction()
     {
-
+        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
+        $departamento = new Departamento;
+        $this->view['resultDepartamento'] = $departamento->returnAll();
         $this->render('classificacao.form_novo');
     }
 
@@ -56,6 +59,7 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function editarAction()
     {
+        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
 
@@ -79,6 +83,7 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function visualizarAction()
     {
+        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         // Atribui os resultados retornados pela consulta
