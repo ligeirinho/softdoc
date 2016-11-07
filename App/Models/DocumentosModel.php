@@ -336,11 +336,22 @@ class DocumentosModel extends ModelCRUD
      */
     private function validateAll($User)
     {
+        $extensao;
+        if($_FILES['arquivo']['type'] == 'image/jpeg'){
+            $extensao = 'jpg';
+        }else if($_FILES['arquivo']['type'] == 'application/pdf'){
+            $extensao = 'pdf';
+        }else if($_FILES['arquivo']['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+            $extensao = 'doc';
+        }else if ($_FILES['arquivo']['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+            $extensao = 'application/vnd.ms-powerpoint';
+        }
+        
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
         $this->setTitulo(filter_input(INPUT_POST, 'titulo'));
         $this->setUserId($User['id']);
-        $this->setExtensao($_FILES['arquivo']['type']);
+        $this->setExtensao($extensao);
         $this->setRevisao(filter_input(INPUT_POST, 'revisao'));
         $this->setTamanho($_FILES['arquivo']['size']);
         $this->setDepartamento(filter_input(INPUT_POST, 'departamento'));
