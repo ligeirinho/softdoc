@@ -61,13 +61,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Classificação</label>
-                                    <input type="text"
+                                    <select 
                                            id="classificacao_id"
                                            name="classificacao_id"
-                                           placeholder="Classificação"
                                            class="form-control"
-                                           maxlength="5"
                                            required>
+                                           @foreach ($resultClassificacao as $value)
+                                           <option value="{{$value['id']}}">
+                                               {{$value['nome_classificacao']}}
+                                           </option>
+                                           @endforeach
+                                    </select>
                                 </div>
                             </div>
 

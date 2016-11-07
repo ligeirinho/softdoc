@@ -24,7 +24,6 @@
                         <tr>
                             <th>Título</th>
                             <th>Usuário</th>
-                            <th>Log</th>
                             <th>Extensão</th>
                             <th>Revisão</th>
                             <th>Tamanho</th>
@@ -38,7 +37,6 @@
                         <tr>
                             <td>{{$value['titulo']}}</td>
                             <td>{{$value['user_id']}}</td>
-                            <td>{{$value['log_id']}}</td>
                             <td>{{$value['extensao']}}</td>
                             <td>{{$value['revisao']}}</td>
                             <td>{{$value['tamanho']}}</td>

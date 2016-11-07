@@ -63,13 +63,18 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Classificação</label>
-                                    <input type="text"
+                                    <select 
                                            id="classificacao_id"
                                            name="classificacao_id"
-                                           placeholder="Classificação"
                                            class="form-control"
-                                           maxlength="5"
                                            required>
+                                           <?php $__currentLoopData = $resultClassificacao; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getFirstLoop(); ?>
+                                           <option value="<?php echo e($value['id']); ?>">
+                                               <?php echo e($value['nome_classificacao']); ?>
+
+                                           </option>
+                                           <?php endforeach; $__env->popLoop(); $loop = $__env->getFirstLoop(); ?>
+                                    </select>
                                 </div>
                             </div>
 

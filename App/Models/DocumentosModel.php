@@ -81,24 +81,62 @@ class DocumentosModel extends ModelCRUD
         if (!$dados) {
             return;
         }
-
-        if (!isset($dados['arquivo'])) {
+        
+         if (file_exists('files_uploads/' . $id)) {
             return;
         }
 
-        if ($dados['arquivo']['type'] != 'application/pdf') {
-            msg::showMsg('O arquivo de publicação deve ser no formato PDF. '
-                . '<strong>Extensão *.jpg</strong>.', 'danger');
+        if (empty($dados['arquivo'])) {
+            msg::showMsg('É necessário fornecer um <strong>arquivo</strong> para publicar uma documentação.', 'danger');
         }
-
-        if ($dados['arquivo']['size'] == 0) {
-            msg::showMsg('Ocorreu um erro ao enviar o arquivo de puplicação.'
-                . 'Verifique se o tamanho da imagem ultrapassa <strong>10MB</strong>.', 'danger');
-        }
-
-        if (!move_uploaded_file($dados['arquivo']['tmp_name'], 'files_uploads/' . $id . '.pdf')) {
-            msg::showMsg('Ocorreu um erro ao salvar o arquivo de publicação.'
+        
+        //Upload de Imagens
+        if ($dados['arquivo']['type'] == 'image/jpeg') {
+            if ($dados['arquivo']['size'] == 0) {
+            msg::showMsg('Ocorreu um erro ao enviar a imagem.'
+                . 'Verifique se o tamanho da imagem ultrapassa <strong>2MB</strong>.', 'danger');
+            }
+            
+            if (!move_uploaded_file($dados['arquivo']['tmp_name'], 'files_uploads/imagens/' . $id . '.jpg')) {
+            msg::showMsg('Ocorreu um erro ao salvar a imagem'
                 . 'Verifique sua conexão com a internet.', 'danger');
+            }
+        }
+        //Upload de PDF
+        if ($dados['arquivo']['type'] == 'application/pdf') {          
+            if ($dados['arquivo']['size'] == 0) {
+            msg::showMsg('Ocorreu um erro ao enviar o arquivo de puplicação.'
+                . 'Verifique se o tamanho do PDF ultrapassa <strong>10MB</strong>.', 'danger');
+            }
+
+            if (!move_uploaded_file($dados['arquivo']['tmp_name'], 'files_uploads/pdf/' . $id . '.pdf')) {
+                msg::showMsg('Ocorreu um erro ao salvar o arquivo de publicação.'
+                    . 'Verifique sua conexão com a internet.', 'danger');
+            }
+        }
+        //Upload de Documentos Word
+        if($dados['arquivo']['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+            if ($dados['arquivo']['size'] == 0) {
+            msg::showMsg('Ocorreu um erro ao enviar o arquivo de publicação.'
+                . 'Verifique se o tamanho do arquivo ultrapassa <strong>5MB</strong>.', 'danger');
+            }
+
+            if (!move_uploaded_file($dados['arquivo']['tmp_name'], 'files_uploads/doc/' . $id . '.docx')) {
+                msg::showMsg('Ocorreu um erro ao salvar o arquivo de publicação.'
+                    . 'Verifique sua conexão com a internet.', 'danger');
+            }
+        }
+        //Upload de Arquivos ppt
+        if($dados['arquivo']['type'] == 'application/vnd.ms-powerpoint'){
+            if ($dados['arquivo']['size'] == 0) {
+            msg::showMsg('Ocorreu um erro ao enviar o arquivo de publicação.'
+                . 'Verifique se o tamanho do arquivo ultrapassa <strong>5MB</strong>.', 'danger');
+            }
+
+            if (!move_uploaded_file($dados['arquivo']['tmp_name'], 'files_uploads/ppt/' . $id . '.ppt')) {
+                msg::showMsg('Ocorreu um erro ao salvar o arquivo de publicação.'
+                    . 'Verifique sua conexão com a internet.', 'danger');
+            }
         }
     }
 
@@ -126,11 +164,9 @@ class DocumentosModel extends ModelCRUD
     {
         $token = new Security();
         $token->checkToken();
-
+        
         // Valida dados
         $this->validateAll($User);
-        // Verifica se há registro igual e evita a duplicação
-        $this->notDuplicate();
 
        $dados = [
           'titulo' => $this->getTitulo(),
@@ -145,7 +181,6 @@ class DocumentosModel extends ModelCRUD
         if ($this->insert($dados)) {
             
             $id = $this->pdo->lastInsertId();
-            $acao = "Inserir";
             $this->upload($_FILES, $id);
             
             msg::showMsg('111', 'success');

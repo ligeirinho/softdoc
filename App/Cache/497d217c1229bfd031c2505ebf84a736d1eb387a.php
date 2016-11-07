@@ -24,7 +24,6 @@
                         <tr>
                             <th>Título</th>
                             <th>Usuário</th>
-                            <th>Log</th>
                             <th>Extensão</th>
                             <th>Revisão</th>
                             <th>Tamanho</th>
@@ -38,7 +37,6 @@
                         <tr>
                             <td><?php echo e($value['titulo']); ?></td>
                             <td><?php echo e($value['user_id']); ?></td>
-                            <td><?php echo e($value['log_id']); ?></td>
                             <td><?php echo e($value['extensao']); ?></td>
                             <td><?php echo e($value['revisao']); ?></td>
                             <td><?php echo e($value['tamanho']); ?></td>

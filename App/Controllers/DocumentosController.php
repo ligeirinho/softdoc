@@ -12,6 +12,7 @@ use HTR\Interfaces\ControllerInterface;
 use HTR\Helpers\Access\Access;
 use App\Models\DocumentosModel;
 use App\Models\DepartamentoModel as Departamento;
+use App\Models\ClassificacaoModel as Classificacao;
 
 class DocumentosController extends Controller implements ControllerInterface
 {
@@ -51,6 +52,9 @@ class DocumentosController extends Controller implements ControllerInterface
         $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         $departamento = new Departamento;
         $this->view['resultDepartamento'] = $departamento->returnAll();
+     
+        $classificacao = new Classificacao;
+        $this->view['resultClassificacao'] = $classificacao->returnAll();
         $this->render('documentos.form_novo');
     }
 
