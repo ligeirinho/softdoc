@@ -100,9 +100,10 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function registraAction()
     {
+        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
-        $model->novo();
+        $model->novo($this->view['userLoggedIn']);
     }
 
     /**
