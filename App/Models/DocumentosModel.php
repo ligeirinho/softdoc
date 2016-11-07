@@ -122,23 +122,22 @@ class DocumentosModel extends ModelCRUD
     /**
      * Método responsável por salvar os registros
      */
-    public function novo()
+    public function novo($User)
     {
         $token = new Security();
         $token->checkToken();
 
         // Valida dados
-        $this->validateAll();
+        $this->validateAll($User);
         // Verifica se há registro igual e evita a duplicação
         $this->notDuplicate();
 
        $dados = [
           'titulo' => $this->getTitulo(),
           'user_id' => $this->getUserId(),
-          'log_id' => $this->getLogId(),
-          'extensao' => $_FILES['arquivo']['type'],
+          'extensao' => $this->getExtensao(),
           'revisao' => $this->getRevisao(),
-          'tamanho' => $_FILES['arquivo']['size'],
+          'tamanho' => $this->getTamanho(),
           'departamento' => $this->getDepartamento(),
           'classificacao_id' => $this->getClassificacaoId(),
         ];
@@ -146,9 +145,9 @@ class DocumentosModel extends ModelCRUD
         if ($this->insert($dados)) {
             
             $id = $this->pdo->lastInsertId();
-
+            $acao = "Inserir";
             $this->upload($_FILES, $id);
-
+            
             msg::showMsg('111', 'success');
         }
     }
@@ -169,7 +168,6 @@ class DocumentosModel extends ModelCRUD
        $dados = [
           'titulo' => $this->getTitulo(),
           'user_id' => $this->getUserId(),
-          'log_id' => $this->getLogId(),
           'extensao' => $this->getExtensao(),
           'revisao' => $this->getRevisao(),
           'tamanho' => $this->getTamanho(),
@@ -225,20 +223,7 @@ class DocumentosModel extends ModelCRUD
                 . '<strong>Usuário</strong>.'
                 . '<script>focusOn("user_id")</script>', 'warning');
         }
-        // Não deixa duplicar os valores do campo log_id
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('log_id', '=' , $this->getLogId());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Log</strong>.'
-                . '<script>focusOn("log_id")</script>', 'warning');
-        }
+        
         // Não deixa duplicar os valores do campo extensao
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
@@ -314,27 +299,21 @@ class DocumentosModel extends ModelCRUD
     /*
      * Validação dos Dados enviados pelo formulário
      */
-    private function validateAll()
+    private function validateAll($User)
     {
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
         $this->setTitulo(filter_input(INPUT_POST, 'titulo'));
-        $this->setUserId(filter_input(INPUT_POST, 'user_id'));
-        $this->setLogId(filter_input(INPUT_POST, 'log_id'));
-        $this->setExtensao(filter_input(INPUT_POST, 'extensao'));
+        $this->setUserId($User['id']);
+        $this->setExtensao($_FILES['arquivo']['type']);
         $this->setRevisao(filter_input(INPUT_POST, 'revisao'));
-        $this->setTamanho(filter_input(INPUT_POST, 'tamanho'));
+        $this->setTamanho($_FILES['arquivo']['size']);
         $this->setDepartamento(filter_input(INPUT_POST, 'departamento'));
         $this->setClassificacaoId(filter_input(INPUT_POST, 'classificacao_id'));
 
         // Inicia a Validação dos dados
         $this->validateId();
         $this->validateTitulo();
-        $this->validateUserId();
-        $this->validateLogId();
-        $this->validateExtensao();
-        $this->validateRevisao();
-        $this->validateTamanho();
         $this->validateDepartamento();
         $this->validateClassificacaoId();
     }
