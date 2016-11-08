@@ -25,7 +25,6 @@
                             <th>Título</th>
                             <th>Usuário</th>
                             <th>Extensão</th>
-                            <th>Revisão</th>
                             <th>Tamanho</th>
                             <th>Departamento</th>
                             <th>Classificação</th>
@@ -38,7 +37,6 @@
                             <td><?php echo e($value['titulo']); ?></td>
                             <td><?php echo e($value['name']); ?></td>
                             <td><?php echo e($value['extensao']); ?></td>
-                            <td><?php echo e($value['revisao']); ?></td>
                             <td><?php echo e($value['tamanho']); ?></td>
                             <td><?php echo e($value['departamento']); ?></td>
                             <td><?php echo e($value['classificacao']); ?></td>

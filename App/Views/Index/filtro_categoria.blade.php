@@ -19,7 +19,6 @@
                             <th>Título</th>
                             <th>Usuário</th>
                             <th>Extensão</th>
-                            <th>Revisão</th>
                             <th>Tamanho</th>
                             <th>Departamento</th>
                             <th>Classificação</th>
@@ -30,20 +29,14 @@
                         @foreach ($result as $value)
                         <tr>
                             <td>{{$value['titulo']}}</td>
-                            <td>{{$value['user_id']}}</td>
+                            <td>{{$value['name']}}</td>
                             <td>{{$value['extensao']}}</td>
-                            <td>{{$value['revisao']}}</td>
                             <td>{{$value['tamanho']}}</td>
                             <td>{{$value['departamento']}}</td>
-                            <td>{{$value['classificacao_id']}}</td>
+                            <td>{{$value['classificacao']}}</td>
                             <td>
-                                <a href="{{$controller}}editar/id/{{$value['id']}}" class="btn btn-success">
-                                    <i class="fa fa-edit"></i> Editar
-                                </a>
-                                <a href="#"
-                                   onclick="confirmar('Deseja REMOVER este registro?', '{{$controller}}eliminar/id/{{$value['id']}}')"
-                                   class="btn btn-danger">
-                                    <i class="fa fa-trash"></i> Eliminar
+                                <a href="{{$controller}}ler/id/{{$value['id']}}" class="btn btn-success">
+                                    <i class="fa fa-eye"></i> Ler
                                 </a>
                             </td>
                         </tr>

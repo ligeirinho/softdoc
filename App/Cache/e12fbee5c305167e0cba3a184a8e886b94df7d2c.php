@@ -47,87 +47,70 @@
                                            maxlength="70"
                                            required>
                                 </div>
-                                <div class="form-group">
-                                    <label>Usuário</label>
-                                    <input type="text"
-                                           id="user_id"
-                                           name="user_id"
-                                           placeholder="Usuário"
-                                           class="form-control"
-                                           value="<?php echo e($result['user_id']); ?>"
-                                           maxlength="5"
-                                           required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Log</label>
-                                    <input type="text"
-                                           id="log_id"
-                                           name="log_id"
-                                           placeholder="Log"
-                                           class="form-control"
-                                           value="<?php echo e($result['log_id']); ?>"
-                                           maxlength="5"
-                                           required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Extensão</label>
-                                    <input type="text"
-                                           id="extensao"
-                                           name="extensao"
-                                           placeholder="Extensão"
-                                           class="form-control"
-                                           value="<?php echo e($result['extensao']); ?>"
-                                           maxlength="10"
-                                           >
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Revisão</label>
-                                    <input type="text"
-                                           id="revisao"
-                                           name="revisao"
-                                           placeholder="Revisão"
-                                           class="form-control"
-                                           value="<?php echo e($result['revisao']); ?>"
-                                           maxlength="11"
-                                           >
-                                </div>
-                                <div class="form-group">
-                                    <label>Tamanho</label>
-                                    <input type="text"
-                                           id="tamanho"
-                                           name="tamanho"
-                                           placeholder="Tamanho"
-                                           class="form-control"
-                                           value="<?php echo e($result['tamanho']); ?>"
-                                           maxlength="20"
-                                           >
-                                </div>
+                                
                                 <div class="form-group">
                                     <label>Departamento</label>
-                                    <input type="text"
+                                    <select
                                            id="departamento"
                                            name="departamento"
-                                           placeholder="Departamento"
                                            class="form-control"
-                                           value="<?php echo e($result['departamento']); ?>"
-                                           maxlength="5"
                                            required>
+                                           <?php $__currentLoopData = $resultDepartamento; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getFirstLoop(); ?>
+                                           <option value="<?php echo e($value['id']); ?>"
+                                               <?php if($result['departamento'] == $value['id']): ?>
+                                                   selected
+                                               <?php endif; ?>
+                                               >
+                                               <?php echo e($value['nome']); ?>
+
+                                           </option>
+                                           <?php endforeach; $__env->popLoop(); $loop = $__env->getFirstLoop(); ?>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Classificação</label>
-                                    <input type="text"
+                                    <select
                                            id="classificacao_id"
                                            name="classificacao_id"
-                                           placeholder="Classificação"
                                            class="form-control"
-                                           value="<?php echo e($result['classificacao_id']); ?>"
-                                           maxlength="5"
                                            required>
+                                           <?php $__currentLoopData = $resultClassificacao; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getFirstLoop(); ?>
+                                           <option value="<?php echo e($value['id']); ?>"
+                                               <?php if($result['classificacao_id'] == $value['id']): ?>
+                                                   selected
+                                               <?php endif; ?>
+                                               >
+                                               <?php echo e($value['nome_classificacao']); ?>
+
+                                           </option>
+                                           <?php endforeach; $__env->popLoop(); $loop = $__env->getFirstLoop(); ?>
+                                    </select>
+                                </div>
+                                
+                            </div>
+
+                            <div class="col-lg-6">
+                                
+                                <div class="form-group">
+                                    <label>Opções de publicação</label>
+                                    <input type="radio" name="change_publicacao" value="arquivo" class="change_publicacao" checked=""> Arquivo |
+                                    <input type="radio" name="change_publicacao" value="link" class="change_publicacao"> Link
+                                </div>
+                                <div class="form-group set-arquivo">
+                                    <label>Arquivo para publicação</label>
+                                    <input type="file" name="arquivo" class="form-control">
                                 </div>
 
+                                <div class="form-group set-link" style="display: none">
+                                    <label>Link de arquivo externo</label>
+                                    <input type="url"
+                                           id="link"
+                                           name="link"
+                                           placeholder="URL do arquivo externo"
+                                           class="form-control"
+                                           value="<?php echo e($result['link']); ?>">
+                                </div>
+                                
                                 <div class="form-group">
                                     <br>
                                     <button class="btn btn-primary"><i class="fa fa-check"></i> Registrar</button>
@@ -147,5 +130,24 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+
+    $('.change_publicacao').click(function() {
+
+        var value = $(this).val();
+
+        if (value == 'arquivo') {
+            $('.set-link').hide();
+            $('.set-arquivo').show();
+        }
+
+        if (value == 'link') {
+            $('.set-link').show();
+            $('.set-arquivo').hide();
+        }
+    });
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layout.default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

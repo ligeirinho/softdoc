@@ -66,7 +66,12 @@ class DocumentosController extends Controller implements ControllerInterface
         $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
-
+        
+        $departamento = new Departamento;
+        $this->view['resultDepartamento'] = $departamento->returnAll();
+     
+        $classificacao = new Classificacao;
+        $this->view['resultClassificacao'] = $classificacao->returnAll();
 
         $this->view['result'] = $model->findById($this->getParam('id'));
         $this->render('documentos.form_editar');
@@ -115,8 +120,9 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function alteraAction()
     {
+        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
-        $model->editar();
+        $model->editar($this->view['userLoggedIn']);
     }
 }

@@ -27,6 +27,7 @@ class DocumentosModel extends ModelCRUD
     protected $extensao;
     protected $revisao;
     protected $tamanho;
+    protected $link;
     protected $departamento;
     protected $classificacaoId;
 
@@ -56,7 +57,7 @@ class DocumentosModel extends ModelCRUD
     {
         $dados = [
             'pdo' => $this->pdo,
-            'select' => ' documentos.id, titulo, auth.name, extensao, revisao, '
+            'select' => ' documentos.id, titulo, auth.name, extensao, '
             . 'tamanho, departamento.nome as departamento, '
             . 'classificacao.nome_classificacao as classificacao',
             'entidade' => '`documentos` 
@@ -90,7 +91,13 @@ class DocumentosModel extends ModelCRUD
          */
         $dados = [
             'pdo' => $this->pdo,
-            'entidade' => '`documentos`',
+            'select' => ' documentos.id, titulo, auth.name, extensao, '
+            . 'tamanho, departamento.nome as departamento, '
+            . 'classificacao.nome_classificacao as classificacao',
+            'entidade' => '`documentos` 
+			INNER JOIN auth ON auth.id=user_id 
+                        INNER JOIN departamento ON departamento.id=departamento 
+                        INNER JOIN classificacao ON classificacao.id=classificacao_id',
             'where' => 'classificacao_id = ?',
             'bindValue' => [$find],
             'pagina' => $pagina,
@@ -200,9 +207,8 @@ class DocumentosModel extends ModelCRUD
        $dados = [
           'titulo' => $this->getTitulo(),
           'user_id' => $this->getUserId(),
-          'extensao' => $this->getExtensao(),
-          'revisao' => $this->getRevisao(),
           'tamanho' => $this->getTamanho(),
+          'link' => $this->getLink(),
           'departamento' => $this->getDepartamento(),
           'classificacao_id' => $this->getClassificacaoId(),
         ];
@@ -219,25 +225,26 @@ class DocumentosModel extends ModelCRUD
     /**
      * Método responsável por alterar os registros
      */
-    public function editar()
+    public function editar($User)
     {
         $token = new Security();
         $token->checkToken();
 
         // Valida dados
-        $this->validateAll();
+        $this->validateAll($User);
         // Verifica se há registro igual e evita a duplicação
         $this->notDuplicate();
 
        $dados = [
           'titulo' => $this->getTitulo(),
           'user_id' => $this->getUserId(),
-          'extensao' => $this->getExtensao(),
-          'revisao' => $this->getRevisao(),
           'tamanho' => $this->getTamanho(),
+          'link' => $this->getLink(),
           'departamento' => $this->getDepartamento(),
           'classificacao_id' => $this->getClassificacaoId(),
         ];
+       
+       $this->upload($_FILES, $this->getId());
 
         if ($this->update($dados, $this->getId())) {
             msg::showMsg('001', 'success');
@@ -383,6 +390,7 @@ class DocumentosModel extends ModelCRUD
         $this->setExtensao($extensao);
         $this->setRevisao(filter_input(INPUT_POST, 'revisao'));
         $this->setTamanho($_FILES['arquivo']['size']);
+        $this->setLink(filter_input(INPUT_POST, 'link'));
         $this->setDepartamento(filter_input(INPUT_POST, 'departamento'));
         $this->setClassificacaoId(filter_input(INPUT_POST, 'classificacao_id'));
 

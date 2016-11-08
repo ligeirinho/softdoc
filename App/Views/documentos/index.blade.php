@@ -25,7 +25,6 @@
                             <th>Título</th>
                             <th>Usuário</th>
                             <th>Extensão</th>
-                            <th>Revisão</th>
                             <th>Tamanho</th>
                             <th>Departamento</th>
                             <th>Classificação</th>
@@ -38,7 +37,6 @@
                             <td>{{$value['titulo']}}</td>
                             <td>{{$value['name']}}</td>
                             <td>{{$value['extensao']}}</td>
-                            <td>{{$value['revisao']}}</td>
                             <td>{{$value['tamanho']}}</td>
                             <td>{{$value['departamento']}}</td>
                             <td>{{$value['classificacao']}}</td>
