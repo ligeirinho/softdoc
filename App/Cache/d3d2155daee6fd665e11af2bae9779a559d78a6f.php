@@ -1,11 +1,3 @@
-<!--
- * @view  documentos/index.blade.php
- * @created  at 03-11-2016 12:49:36
- * - Criado Automaticamente pelo HTR Assist
- -->
-
-
-
 <?php $__env->startSection('title', 'Lista de Documentos'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -36,12 +28,12 @@
                         <?php $__currentLoopData = $result; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getFirstLoop(); ?>
                         <tr>
                             <td><?php echo e($value['titulo']); ?></td>
-                            <td><?php echo e($value['name']); ?></td>
+                            <td><?php echo e($value['user_id']); ?></td>
                             <td><?php echo e($value['extensao']); ?></td>
                             <td><?php echo e($value['revisao']); ?></td>
                             <td><?php echo e($value['tamanho']); ?></td>
                             <td><?php echo e($value['departamento']); ?></td>
-                            <td><?php echo e($value['classificacao']); ?></td>
+                            <td><?php echo e($value['classificacao_id']); ?></td>
                             <td>
                                 <a href="<?php echo e($controller); ?>editar/id/<?php echo e($value['id']); ?>" class="btn btn-success">
                                     <i class="fa fa-edit"></i> Editar
@@ -86,4 +78,6 @@
 </div>
 <!-- /#page-wrapper -->
 <?php $__env->stopSection(); ?>
+
+
 <?php echo $__env->make('layout.default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

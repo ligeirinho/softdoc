@@ -54,18 +54,47 @@ class DocumentosModel extends ModelCRUD
 
     public function paginator($pagina)
     {
+        $dados = [
+            'pdo' => $this->pdo,
+            'select' => ' documentos.id, titulo, auth.name, extensao, revisao, '
+            . 'tamanho, departamento.nome as departamento, '
+            . 'classificacao.nome_classificacao as classificacao',
+            'entidade' => '`documentos` 
+			INNER JOIN auth ON auth.id=user_id 
+                        INNER JOIN departamento ON departamento.id=departamento 
+                        INNER JOIN classificacao ON classificacao.id=classificacao_id',
+            'pagina' => $pagina,
+            'maxResult' => 20
+        ];
+        
+
+        // Instacia o Helper que auxilia na paginação de páginas
+        $paginator = new Paginator($dados);
+        // Resultado da consulta
+        $this->resultadoPaginator =  $paginator->getResultado();
+        // Links para criação do menu de navegação da paginação @return array
+        $this->navePaginator = $paginator->getNaveBtn();
+    }
+    
+    /**
+     * Método responsável por filtro de categorias do sistema
+     *
+     * @param int $pagina
+     * @param int $find
+     * @return array
+     */
+    public function filterByCategoria($pagina, $find)
+    {
         /**
          * Preparando as diretrizes da consulta
          */
         $dados = [
             'pdo' => $this->pdo,
-            'entidade' => $this->entidade,
+            'entidade' => '`documentos`',
+            'where' => 'classificacao_id = ?',
+            'bindValue' => [$find],
             'pagina' => $pagina,
-            'maxResult' => 20,
-            // USAR QUANDO FOR PARA DEMONSTRAR O RESULTADO DE UMA PESQUISA
-            //'orderBy' => 'nome ASC',
-            //'where' => 'nome LIKE ?',
-            //'bindValue' => [0 => '%MONTEIRO%']
+            'maxResult' => 20
         ];
 
         // Instacia o Helper que auxilia na paginação de páginas

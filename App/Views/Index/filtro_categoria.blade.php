@@ -1,9 +1,3 @@
-<!--
- * @view documentos/index.blade.php
- * @created at 03-11-2016 12:49:36
- * - Criado Automaticamente pelo HTR Assist
- -->
-
 @extends('layout.default')
 
 @section('title', 'Lista de Documentos')
@@ -36,12 +30,12 @@
                         @foreach ($result as $value)
                         <tr>
                             <td>{{$value['titulo']}}</td>
-                            <td>{{$value['name']}}</td>
+                            <td>{{$value['user_id']}}</td>
                             <td>{{$value['extensao']}}</td>
                             <td>{{$value['revisao']}}</td>
                             <td>{{$value['tamanho']}}</td>
                             <td>{{$value['departamento']}}</td>
-                            <td>{{$value['classificacao']}}</td>
+                            <td>{{$value['classificacao_id']}}</td>
                             <td>
                                 <a href="{{$controller}}editar/id/{{$value['id']}}" class="btn btn-success">
                                     <i class="fa fa-edit"></i> Editar
@@ -86,3 +80,4 @@
 </div>
 <!-- /#page-wrapper -->
 @endsection
+

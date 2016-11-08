@@ -48,6 +48,20 @@ class ClassificacaoModel extends ModelCRUD
          */
         return $this->findAll();
     }
+    
+    /**
+     * Método uaso para retornar todos os dados de classificação de acordo com o departamento do usuário.
+     */
+    public function returnClassificacao($user){
+        $query = "SELECT classificacao.id, classificacao.nome_classificacao, auth.name "
+                . "FROM `auth` "
+                . "INNER JOIN classificacao ON auth.id=classificacao.usuario_id "
+                . "WHERE auth.id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $id = $user['id'];
+        $stmt->execute([$id]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
     public function paginator($pagina)
     {
@@ -89,6 +103,7 @@ class ClassificacaoModel extends ModelCRUD
     {
         return $this->navePaginator;
     }
+    
 
     /**
      * Método responsável por salvar os registros
@@ -171,20 +186,7 @@ class ClassificacaoModel extends ModelCRUD
                 . '<strong>Classificação</strong>.'
                 . '<script>focusOn("nome_classificacao")</script>', 'warning');
         }
-        // Não deixa duplicar os valores do campo departamento
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('departamento', '=' , $this->getDepartamento());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Departamento</strong>.'
-                . '<script>focusOn("departamento")</script>', 'warning');
-        }
+        
         // Não deixa duplicar os valores do campo criado
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
@@ -212,20 +214,6 @@ class ClassificacaoModel extends ModelCRUD
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
                 . '<strong>Alterado</strong>.'
                 . '<script>focusOn("alterado")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo usuario_id
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('usuario_id', '=' , $this->getUsuarioId());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Usuário</strong>.'
-                . '<script>focusOn("usuario_id")</script>', 'warning');
         }
     }
 

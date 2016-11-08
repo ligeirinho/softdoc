@@ -3,7 +3,7 @@
     <div class="menu_section">
 
         <ul class="nav side-menu">
-            <li><a href="<?php echo e(APPDIR); ?>Acesso/dashboard/"><i class="fa fa-home"></i> Home</a>
+            <li><a href="<?php echo e(APPDIR); ?>Index/dashboard/"><i class="fa fa-home"></i> Home</a>
 
             </li>
             <li>

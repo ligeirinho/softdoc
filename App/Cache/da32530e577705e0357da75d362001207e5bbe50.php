@@ -20,7 +20,7 @@
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title" style="border: 0;">
                             <a href="<?php echo e(APPDIR); ?>Acesso/dashboard" class="site_title">
-                                <i class="fa fa-fire fa-flip-horizontal"></i>
+                                <i class="fa fa-book fa-flip-horizontal"></i>
                                 <span style="font-size: 14px !important;"><?php echo e(APPNAM); ?></span>
                             </a>
                         </div>
