@@ -6,46 +6,52 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="Bruno Monteiro">
-
+        <meta name="Service Desk" content="">
+        <meta name="Paulo Henrique" content="Paulo Henrique">
         <title><?php echo $__env->yieldContent('title'); ?> :: <?php echo e(APPNAM); ?> <?php echo e(APPVER); ?> ::</title>
 
         <?php echo $__env->make('layout.Common.styles', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-
     </head>
 
-    <body>
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="<?php echo e(APPDIR); ?>Acesso/dashboard" class="site_title">
+                                <i class="fa fa-fire fa-flip-horizontal"></i>
+                                <span style="font-size: 14px !important;"><?php echo e(APPNAM); ?></span>
+                            </a>
+                        </div>
 
-        <div id="wrapper">
+                        <div class="clearfix"></div>
 
-            <!-- Navigation -->
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo e(APPDIR); ?>"><?php echo e(APPNAM.' '.APPVER); ?></a>
+                        <?php echo $__env->make('layout.Partials.menu_vertical', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+                    </div>
                 </div>
-                <!-- /.navbar-header -->
-
                 <?php echo $__env->make('layout.Partials.menu_horizontal_top', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-                
-                <?php echo $__env->make('layout.Partials.menu_vertical', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                <div class="right_col" role="main">
+                    <div class="">
+                        
+                     <?php echo $__env->yieldContent('content'); ?>   
+                        
+                    </div>
+                    
+                </div>
 
-            </nav>
-            
-            <?php echo $__env->yieldContent('content'); ?>
-
+                <!-- footer content -->
+                <footer>
+                    <div class="pull-right">
+                        Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </footer>
+                <!-- /footer content -->
+            </div>
         </div>
-        <!-- /#wrapper -->
-
-        <?php echo $__env->make('layout.Common.scripts', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-
-
+        <?php echo $__env->make('layout.Common.scripts', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
     </body>
 
 </html>

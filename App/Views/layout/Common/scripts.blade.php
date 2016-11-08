@@ -1,5 +1,3 @@
-<!-- jQuery -->
-<script src="{{ATTACH}}jquery/dist/jquery.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ATTACH}}bootstrap/dist/js/bootstrap.min.js"></script>
@@ -14,7 +12,8 @@
 <script src="{{ATTACH}}jqueryForm/jquery.form.js"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="{{DIRJS_}}sb-admin-2.js"></script>
+<script src="{{DIRJS_}}gentelella/js/custom.js"></script>
+
 <!-- Script padrão de envio de formulário -->
 <script type="text/javascript">
     function resetForm(){
