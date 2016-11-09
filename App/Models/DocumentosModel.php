@@ -400,6 +400,64 @@ class DocumentosModel extends ModelCRUD
         $this->validateDepartamento();
         $this->validateClassificacaoId();
     }
+    
+    public function loadPublicacao($documento)
+    {
+        // caso a publicação seja um link externo, redireciona para este link
+        if ($documento['link']) {
+            header("location: " . $documento['link']);
+            return true;
+        }
+        
+        // verifica se o arquivo Doc existe
+        $filename = 'files_uploads/doc/' . $documento['id'] . '.doc';
+        if (!file_exists($filename)) {
+            return false;
+        }else{
+            $file = file_get_contents($filename);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            echo $file;
+            return true;
+        }
+        
+        // verifica se o arquivo ppt existe
+        $filename = 'files_uploads/ppt/' . $documento['id'] . '.ppt';
+        if (!file_exists($filename)) {
+            return false;
+        }else{
+            $file = file_get_contents($filename);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.presentationml.presentation');
+            echo $file;
+            return true;
+        }
+        
+        
+        // verifica se o arquivo de imagem existe
+        $filename = 'files_uploads/imagens/' . $documento['id'] . '.jpg';
+        if (!file_exists($filename)) {
+            return false;
+        }else{
+            $file = file_get_contents($filename);
+            header('Content-Type: image/jpeg');
+            echo $file;
+            return true;
+        }
+        
+        // verifica se o arquivo PDF existe
+        $filename = 'files_uploads/pdf/' . $documento['id'] . '.pdf';
+        if (!file_exists($filename)) {
+            return false;
+        }else{
+            $file = file_get_contents($filename);
+            header('Content-Type: application/pdf');
+            echo $file;
+            return true;
+        }
+
+        
+
+        return true;
+    }
 
     private function setId($value)
     {

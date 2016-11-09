@@ -9,6 +9,7 @@ use HTR\System\ControllerAbstract as Controller;
 use HTR\Interfaces\ControllerInterface as CtrlInterface;
 use App\Models\ClassificacaoModel as Classificacao;
 use HTR\Helpers\Access\Access;
+use App\Models\RankingsModel;
 use App\Models\DocumentosModel as Documentos;
 
 class IndexController extends Controller implements CtrlInterface
@@ -43,6 +44,15 @@ class IndexController extends Controller implements CtrlInterface
         $this->view['resultClassificacao'] = $classificacao->returnClassificacao($this->view['userLoggedIn']);
         //Renderiza a view dashboard
         $this->render('Index.dashboard');
+    }
+    
+    public function lerAction()
+    {
+        $rankingModel = new RankingsModel($this->access->pdo);
+        if (!$rankingModel->novo($this->getParam('id'))) {
+
+            $this->render('Index.publicacao_nao_existe');
+        }
     }
     
     public function filtroCategoriaAction(){        
