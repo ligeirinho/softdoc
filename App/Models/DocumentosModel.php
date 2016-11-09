@@ -211,6 +211,7 @@ class DocumentosModel extends ModelCRUD
           'link' => $this->getLink(),
           'departamento' => $this->getDepartamento(),
           'classificacao_id' => $this->getClassificacaoId(),
+           'criado' => time(),
         ];
 
         if ($this->insert($dados)) {
@@ -419,7 +420,7 @@ class DocumentosModel extends ModelCRUD
             echo $file;
             return true;
         }
-        
+      
         // verifica se o arquivo ppt existe
         $filename = 'files_uploads/ppt/' . $documento['id'] . '.ppt';
         if (!file_exists($filename)) {
@@ -453,10 +454,7 @@ class DocumentosModel extends ModelCRUD
             echo $file;
             return true;
         }
-
         
-
-        return true;
     }
 
     private function setId($value)
