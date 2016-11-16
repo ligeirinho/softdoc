@@ -46,20 +46,6 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label>Departamento</label>
-                                    <select 
-                                           id="departamento"
-                                           name="departamento"
-                                           class="form-control"
-                                           required>
-                                           @foreach ($resultDepartamento as $value)
-                                           <option value="{{$value['id']}}">
-                                               {{$value['nome']}}
-                                           </option>
-                                           @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label>Classificação</label>
                                     <select 
                                            id="classificacao_id"
@@ -73,6 +59,7 @@
                                            @endforeach
                                     </select>
                                 </div>
+                                
                             </div>
 
                             <div class="col-lg-6">

@@ -54,8 +54,9 @@ class ClassificacaoModel extends ModelCRUD
      */
     public function returnClassificacao($user){
         $query = "SELECT classificacao.id, classificacao.nome_classificacao, auth.name "
-                . "FROM `auth` "
-                . "INNER JOIN classificacao ON auth.id=classificacao.usuario_id "
+                . "FROM `auth`"
+                . "INNER JOIN classificacao "
+                . "ON auth.departamento=classificacao.departamento "
                 . "WHERE auth.id = ?";
         $stmt = $this->pdo->prepare($query);
         $id = $user['id'];

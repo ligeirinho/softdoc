@@ -54,7 +54,7 @@ class DocumentosController extends Controller implements ControllerInterface
         $this->view['resultDepartamento'] = $departamento->returnAll();
      
         $classificacao = new Classificacao;
-        $this->view['resultClassificacao'] = $classificacao->returnAll();
+        $this->view['resultClassificacao'] = $classificacao->returnClassificacao($this->view['userLoggedIn']);
         $this->render('documentos.form_novo');
     }
 
@@ -86,7 +86,7 @@ class DocumentosController extends Controller implements ControllerInterface
         $model = new $this->modelDefault($this->access->pdo);
         $model->remover($this->getParam('id'));
     }
-
+    
     /**
      * Action responsável por eliminar os registros
      */

@@ -392,13 +392,12 @@ class DocumentosModel extends ModelCRUD
         $this->setRevisao(filter_input(INPUT_POST, 'revisao'));
         $this->setTamanho($_FILES['arquivo']['size']);
         $this->setLink(filter_input(INPUT_POST, 'link'));
-        $this->setDepartamento(filter_input(INPUT_POST, 'departamento'));
+        $this->setDepartamento($user['departamento']);
         $this->setClassificacaoId(filter_input(INPUT_POST, 'classificacao_id'));
 
         // Inicia a Validação dos dados
         $this->validateId();
         $this->validateTitulo();
-        $this->validateDepartamento();
         $this->validateClassificacaoId();
     }
     
