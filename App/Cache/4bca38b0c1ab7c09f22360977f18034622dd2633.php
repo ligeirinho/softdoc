@@ -47,21 +47,6 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label>Departamento</label>
-                                    <select 
-                                           id="departamento"
-                                           name="departamento"
-                                           class="form-control"
-                                           required>
-                                           <?php $__currentLoopData = $resultDepartamento; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getFirstLoop(); ?>
-                                           <option value="<?php echo e($value['id']); ?>">
-                                               <?php echo e($value['nome']); ?>
-
-                                           </option>
-                                           <?php endforeach; $__env->popLoop(); $loop = $__env->getFirstLoop(); ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label>Classificação</label>
                                     <select 
                                            id="classificacao_id"
@@ -76,6 +61,7 @@
                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getFirstLoop(); ?>
                                     </select>
                                 </div>
+                                
                             </div>
 
                             <div class="col-lg-6">

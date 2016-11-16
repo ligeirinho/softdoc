@@ -1,3 +1,5 @@
 /nbproject/
 *~
 /vendor/
+/public_html/
+/App/Cache/

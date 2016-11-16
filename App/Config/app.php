@@ -46,6 +46,8 @@ define('COLMOP', 'change_password');
 // dos arquivos da aplicação não poderão ficar acessíveis ao público
 // Default Value: ../
 define('DRINST', '../');
+// redirecionamento padrão após o login
+define('REDLOG', APPDIR . 'documentos/');
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

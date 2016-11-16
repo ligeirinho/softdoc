@@ -16,7 +16,7 @@
                         <form role="form" id="form" action="{{$controller}}autentica" method="post">
                             {!!$token!!}
                             <h1><i class="fa fa-lock"></i> Área de Login </h1>
-                            <div id="resultado"></div>
+                            <div class="resultado"></div>
                             <div>
                                 <input type="text"
                                        name="username"

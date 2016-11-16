@@ -62,7 +62,7 @@ class DocumentosModel extends ModelCRUD
             . 'classificacao.nome_classificacao as classificacao',
             'entidade' => '`documentos` 
 			INNER JOIN auth ON auth.id=user_id 
-                        INNER JOIN departamento ON departamento.id=departamento 
+                        INNER JOIN departamento ON departamento.id=auth.departamento  
                         INNER JOIN classificacao ON classificacao.id=classificacao_id',
             'pagina' => $pagina,
             'maxResult' => 20
