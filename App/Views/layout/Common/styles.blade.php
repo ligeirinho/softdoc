@@ -1,12 +1,8 @@
 <!-- Bootstrap Core CSS -->
 <link href="{{ATTACH}}bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- MetisMenu CSS -->
-<link href="{{ATTACH}}metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-
 <!-- Custom CSS -->
 <link href="{{DIRCSS}}gentelella/css/custom.min.css" rel="stylesheet">
-<link href="{{DIRCSS}}gentelella/css/custom.css" rel="stylesheet">
 
 <!-- Custom Fonts -->
 <link href="{{ATTACH}}font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">

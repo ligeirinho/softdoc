@@ -2,9 +2,6 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ATTACH}}bootstrap/dist/js/bootstrap.min.js"></script>
 
-<!-- Metis Menu Plugin JavaScript -->
-<script src="{{ATTACH}}metisMenu/dist/metisMenu.min.js"></script>
-
 <!-- Mask Plugin JavaScript -->
 <script src="{{ATTACH}}jqueryMask/jquery.mask.min.js"></script>
 

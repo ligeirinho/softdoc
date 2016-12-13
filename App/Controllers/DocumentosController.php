@@ -25,11 +25,10 @@ class DocumentosController extends Controller implements ControllerInterface
     public function __construct()
     {
         parent::__construct();
-
+        
         $this->view['controller'] = APPDIR . 'documentos/';
-
+        
         $this->modelDefault = DocumentosModel::class;
-
         // Instancia o Helper que auxilia na proteção de páginas e autenticação de usuários
         $this->access = new Access();
     }
@@ -82,7 +81,7 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function eliminarAction()
     {
-        // Instanciando o Model padrão usado.
+        //Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->remover($this->getParam('id'));
     }
