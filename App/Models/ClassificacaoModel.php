@@ -74,10 +74,31 @@ class ClassificacaoModel extends ModelCRUD
             'entidade' => $this->entidade,
             'pagina' => $pagina,
             'maxResult' => 20,
-            // USAR QUANDO FOR PARA DEMONSTRAR O RESULTADO DE UMA PESQUISA
-            //'orderBy' => 'nome ASC',
-            //'where' => 'nome LIKE ?',
-            //'bindValue' => [0 => '%MONTEIRO%']
+        ];
+        
+        // Instacia o Helper que auxilia na paginação de páginas
+        $paginator = new Paginator($dados);
+        // Resultado da consulta
+        $this->resultadoPaginator =  $paginator->getResultado();
+        // Links para criação do menu de navegação da paginação @return array
+        $this->navePaginator = $paginator->getNaveBtn();
+    }
+
+    public function paginatorUser($pagina, $user)
+    {
+        /**
+         * Preparando as diretrizes da consulta
+         */
+        $dados = [
+            'pdo' => $this->pdo,
+            'select' => 'classificacao.id, nome_classificacao, '
+            . 'classificacao.departamento, '
+            . 'departamento.nome as nome_departamento, criado, alterado',
+            'entidade' => 'classificacao
+			INNER JOIN departamento ON departamento.id= classificacao.departamento',
+            'where' => "departamento = '{$user['departamento']}'",
+            'pagina' => $pagina,
+            'maxResult' => 20
         ];
 
         // Instacia o Helper que auxilia na paginação de páginas
@@ -87,7 +108,6 @@ class ClassificacaoModel extends ModelCRUD
         // Links para criação do menu de navegação da paginação @return array
         $this->navePaginator = $paginator->getNaveBtn();
     }
-
 
     /**
      * Acessivel para o Controller coletar os resultados
@@ -109,13 +129,13 @@ class ClassificacaoModel extends ModelCRUD
     /**
      * Método responsável por salvar os registros
      */
-    public function novo()
+    public function novo($user)
     {
         $token = new Security();
         $token->checkToken();
 
         // Valida dados
-        $this->validateAll();
+        $this->validateAll($user);
         // Verifica se há registro igual e evita a duplicação
         $this->notDuplicate();
 
@@ -123,8 +143,6 @@ class ClassificacaoModel extends ModelCRUD
           'nome_classificacao' => $this->getNomeClassificacao(),
           'departamento' => $this->getDepartamento(),
           'criado' => $this->getCriado(),
-          'alterado' => $this->getAlterado(),
-          'usuario_id' => $this->getUsuarioId(),
         ];
 
         if ($this->insert($dados)) {
@@ -135,22 +153,20 @@ class ClassificacaoModel extends ModelCRUD
     /**
      * Método responsável por alterar os registros
      */
-    public function editar()
+    public function editar($user)
     {
         $token = new Security();
         $token->checkToken();
 
         // Valida dados
-        $this->validateAll();
+        $this->validateAll($user);
         // Verifica se há registro igual e evita a duplicação
         $this->notDuplicate();
 
        $dados = [
           'nome_classificacao' => $this->getNomeClassificacao(),
           'departamento' => $this->getDepartamento(),
-          'criado' => $this->getCriado(),
           'alterado' => $this->getAlterado(),
-          'usuario_id' => $this->getUsuarioId(),
         ];
 
         if ($this->update($dados, $this->getId())) {
@@ -221,15 +237,14 @@ class ClassificacaoModel extends ModelCRUD
     /*
      * Validação dos Dados enviados pelo formulário
      */
-    private function validateAll()
+    private function validateAll($user)
     {
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
         $this->setNomeClassificacao(filter_input(INPUT_POST, 'nome_classificacao'));
-        $this->setDepartamento(filter_input(INPUT_POST, 'departamento'));
-        $this->setCriado(filter_input(INPUT_POST, 'criado'));
-        $this->setAlterado(filter_input(INPUT_POST, 'alterado'));
-        $this->setUsuarioId(filter_input(INPUT_POST, 'usuario_id'));
+        $this->setDepartamento($user['departamento']);
+        $this->setCriado(time());
+        $this->setAlterado(time());
 
         // Inicia a Validação dos dados
         $this->validateId();
@@ -237,7 +252,6 @@ class ClassificacaoModel extends ModelCRUD
         $this->validateDepartamento();
         $this->validateCriado();
         $this->validateAlterado();
-        $this->validateUsuarioId();
     }
 
     private function setId($value)

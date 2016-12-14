@@ -46,53 +46,6 @@
                                            maxlength="40"
                                            required>
                                 </div>
-                                <div class="form-group">
-                                    <label>Departamento</label>
-                                    <input type="text"
-                                           id="departamento"
-                                           name="departamento"
-                                           placeholder="Departamento"
-                                           class="form-control"
-                                           value="{{$result['departamento']}}"
-                                           maxlength="5"
-                                           required>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Criado</label>
-                                    <input type="text"
-                                           id="criado"
-                                           name="criado"
-                                           placeholder="Criado"
-                                           class="form-control"
-                                           value="{{$result['criado']}}"
-                                           maxlength="15"
-                                           required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Alterado</label>
-                                    <input type="text"
-                                           id="alterado"
-                                           name="alterado"
-                                           placeholder="Alterado"
-                                           class="form-control"
-                                           value="{{$result['alterado']}}"
-                                           maxlength="15"
-                                           >
-                                </div>
-                                <div class="form-group">
-                                    <label>Usuário</label>
-                                    <input type="text"
-                                           id="usuario_id"
-                                           name="usuario_id"
-                                           placeholder="Usuário"
-                                           class="form-control"
-                                           value="{{$result['usuario_id']}}"
-                                           maxlength="5"
-                                           required>
-                                </div>
 
                                 <div class="form-group">
                                     <br>

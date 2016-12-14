@@ -14,8 +14,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h3>Classificacao</h3>
-                <i class="fa fa-list"></i> Lista de Classificacao<br>
+                <h3>Classificação</h3>
+                <i class="fa fa-list"></i> Lista de Classificação<br>
                 <a href="{{$controller}}novo/" class="btn btn-info">
                     <i class="fa fa-plus"></i> Novo Registro
                 </a>
@@ -26,7 +26,6 @@
                             <th>Departamento</th>
                             <th>Criado</th>
                             <th>Alterado</th>
-                            <th>Usuário</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -34,18 +33,17 @@
                         @foreach ($result as $value)
                         <tr>
                             <td>{{$value['nome_classificacao']}}</td>
-                            <td>{{$value['departamento']}}</td>
-                            <td>{{$value['criado']}}</td>
-                            <td>{{$value['alterado']}}</td>
-                            <td>{{$value['usuario_id']}}</td>
+                            <td>{{$value['nome_departamento']}}</td>
+                            <td><?=date('d-m-Y H:i:s',$value['criado'])?></td>
+                            <td><?=date('d-m-Y H:i:s',$value['alterado'])?></td>
                             <td>
                                 <a href="{{$controller}}editar/id/{{$value['id']}}" class="btn btn-success">
-                                    <i class="fa fa-edit"></i> Editar
+                                    <i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Editar"></i> 
                                 </a>
                                 <a href="#"
                                    onclick="confirmar('Deseja REMOVER este registro?', '{{$controller}}eliminar/id/{{$value['id']}}')"
                                    class="btn btn-danger">
-                                    <i class="fa fa-trash"></i> Eliminar
+                                    <i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Remover"></i> 
                                 </a>
                             </td>
                         </tr>

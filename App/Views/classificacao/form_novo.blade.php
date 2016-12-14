@@ -44,20 +44,7 @@
                                            maxlength="40"
                                            required>
                                 </div>
-                                <div class="form-group">
-                                    <label>Departamento</label>
-                                    <select 
-                                           id="departamento"
-                                           name="departamento"
-                                           class="form-control"
-                                           required>
-                                           @foreach ($resultDepartamento as $value)
-                                           <option value="{{$value['id']}}">
-                                               {{$value['nome']}}
-                                           </option>
-                                           @endforeach
-                                    </select>
-                                </div>
+                                
                                 <div class="form-group">
                                     <br>
                                     <button class="btn btn-primary"><i class="fa fa-check"></i> Registrar</button>

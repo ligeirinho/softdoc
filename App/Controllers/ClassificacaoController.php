@@ -88,7 +88,7 @@ class ClassificacaoController extends Controller implements ControllerInterface
         $model = new $this->modelDefault($this->access->pdo);
         // Atribui os resultados retornados pela consulta
         // feita através do método paginator()
-        $model->paginator($this->getParam('pagina'));
+        $model->paginatorUser($this->getParam('pagina'), $this->view['userLoggedIn']);
         $this->view['result'] = $model->getResultadoPaginator();
         $this->view['btn'] = $model->getNavePaginator();
 
@@ -100,9 +100,10 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function registraAction()
     {
+        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
-        $model->novo();
+        $model->novo($this->view['userLoggedIn']);
     }
 
     /**
@@ -110,8 +111,9 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function alteraAction()
     {
+        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
-        $model->editar();
+        $model->editar($this->view['userLoggedIn']);
     }
 }

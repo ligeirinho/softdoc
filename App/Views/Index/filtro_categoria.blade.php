@@ -10,9 +10,6 @@
             <div class="col-lg-12">
                 <h3>Documentos</h3>
                 <i class="fa fa-list"></i> Lista de Documentos<br>
-                <a href="{{$controller}}novo/" class="btn btn-info">
-                    <i class="fa fa-plus"></i> Novo Registro
-                </a>
                 <table class="table">
                     <thead>
                         <tr>
@@ -22,6 +19,7 @@
                             <th>Tamanho</th>
                             <th>Departamento</th>
                             <th>Classificação</th>
+                            <th>Criado</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -34,6 +32,7 @@
                             <td>{{$value['tamanho']}}</td>
                             <td>{{$value['departamento']}}</td>
                             <td>{{$value['classificacao']}}</td>
+                            <td>{{date('d-m-Y H:i:s',$value['criado'])}}</td>
                             <td>
                                 <a href="{{$controller}}ler/id/{{$value['id']}}" class="btn btn-success">
                                     <i class="fa fa-eye"></i> Ler
