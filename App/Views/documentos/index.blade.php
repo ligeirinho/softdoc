@@ -2,11 +2,15 @@
  * @view documentos/index.blade.php
  * @created at 03-11-2016 12:49:36
  * - Criado Automaticamente pelo HTR Assist
- -->
+-->
 
 @extends('layout.default')
 
 @section('title', 'Lista de Documentos')
+
+@section('style')
+<link href="{{APPDIR}}font/flaticon.css" rel="stylesheet">
+@endsection
 
 @section('content')
 <!-- Page Content -->
@@ -34,20 +38,36 @@
                     <tbody>
                         @foreach ($result as $value)
                         <tr>
-                            <td>{{$value['titulo']}}</td>
-                            <td>{{$value['name']}}</td>
-                            <td>{{$value['extensao']}}</td>
-                            <td>{{$value['tamanho']}}</td>
-                            <td>{{$value['departamento']}}</td>
-                            <td>{{$value['classificacao']}}</td>
+                            <td>
+                                <a href="{{APPDIR}}index/ler/id/{{$value['id']}}">
+                                    <i class='fa fa-external-link'></i> {{$value['titulo']}}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{APPDIR}}auth/editar/id/{{$userLoggedIn['id']}}">
+                                    {{$value['name']}}
+                                </a>
+                            </td>
+                            <td>
+                                <i class="flaticon-{{$value['extensao']}}-file-format text-primary"></i>
+                            </td>
+                            <td>
+                                <?= $value['tamanho'] ? round(number_format($value['tamanho'], 2, '', '.')) . 'KB' : '<span class="badge">link</span>'; ?>
+                            </td>
+                            <td>
+                                {{$value['departamento']}}
+                            </td>
+                            <td>
+                                {{$value['classificacao']}}
+                            </td>
                             <td>
                                 <a href="{{$controller}}editar/id/{{$value['id']}}" class="btn btn-success">
-                                    <i class="fa fa-edit"></i> Editar
+                                    <i class="fa fa-edit"></i>
                                 </a>
                                 <a href="#"
                                    onclick="confirmar('Deseja REMOVER este registro?', '{{$controller}}eliminar/id/{{$value['id']}}')"
                                    class="btn btn-danger">
-                                    <i class="fa fa-trash"></i> Eliminar
+                                    <i class="fa fa-trash"></i>
                                 </a>
                             </td>
                         </tr>

@@ -15,3 +15,4 @@
 <![endif]-->
 <!-- jQuery -->
 <script src="{{ATTACH}}jquery/dist/jquery.min.js"></script>
+@yield('style')
