@@ -53,14 +53,16 @@ class ClassificacaoModel extends ModelCRUD
      * Método uaso para retornar todos os dados de classificação de acordo com o departamento do usuário.
      */
     public function returnClassificacao($user){
-        $query = "SELECT classificacao.id, classificacao.nome_classificacao, auth.name "
-                . "FROM `auth`"
-                . "INNER JOIN classificacao "
-                . "ON auth.departamento=classificacao.departamento "
-                . "WHERE auth.id = ?";
+        $query = "SELECT 
+                COUNT(doc.id) AS quantidade, cl.id AS classificacao_id, 
+                cl.nome_classificacao, dep.nome AS departamento
+            FROM `documentos` AS doc
+                INNER JOIN classificacao AS cl ON cl.id = doc.classificacao_id
+                INNER JOIN departamento AS dep ON dep.id = doc.departamento
+                INNER JOIN auth ON auth.id = doc.user_id AND auth.id = ?
+            GROUP BY cl.nome_classificacao ORDER BY cl.nome_classificacao";
         $stmt = $this->pdo->prepare($query);
-        $id = $user['id'];
-        $stmt->execute([$id]);
+        $stmt->execute([$user['id']]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
@@ -258,5 +260,15 @@ class ClassificacaoModel extends ModelCRUD
     {
         $this->id = $value ? : time();
         return $this;
+    }
+    
+    public function returnAllClassificacaoByUser($user)
+    {
+        // Não deixa duplicar os valores do campo criado
+        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
+            ->setFields(['id', 'nome_classificacao'])
+            ->setFilters()
+            ->where('departamento', '=', $user['departamento']);
+        return $this->db->execute()->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
