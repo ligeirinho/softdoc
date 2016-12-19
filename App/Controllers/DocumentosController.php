@@ -53,7 +53,7 @@ class DocumentosController extends Controller implements ControllerInterface
         $this->view['resultDepartamento'] = $departamento->returnAll();
      
         $classificacao = new Classificacao;
-        $this->view['resultClassificacao'] = $classificacao->returnClassificacao($this->view['userLoggedIn']);
+        $this->view['resultClassificacao'] = $classificacao->returnAllClassificacaoByUser($this->view['userLoggedIn']);
         $this->render('documentos.form_novo');
     }
 
