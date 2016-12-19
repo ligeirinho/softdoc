@@ -63,32 +63,30 @@ class DocumentosModel extends ModelCRUD
         'docx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'download' => true],
         'dotx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.template', 'download' => true],
         'docm' => ['application/vnd.ms-word.document.macroEnabled.12', 'download' => true],
-        'dotm' => ['application/vnd.ms-word.template.macroEnabled.12','download' => true],
-        'xls' => ['application/vnd.ms-excel','download' => true],
-        'xlt' => ['application/vnd.ms-excel','download' => true],
-        'xla' => ['application/vnd.ms-excel','download' => true],
-        'xlsx' =>['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','download' => true],
-        'xltx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.template','download' => true],
-        'xlsm' => ['application/vnd.ms-excel.sheet.macroEnabled.12','download' => true],
-        'xltm' => ['application/vnd.ms-excel.template.macroEnabled.12','download' => true],
-        'xlam' => ['application/vnd.ms-excel.addin.macroEnabled.12','download' => true],
-        'xlsb' => ['application/vnd.ms-excel.sheet.binary.macroEnabled.12','download' => true],
-        'ppt' => ['application/vnd.ms-powerpoint','download' => true],
-        'pot' => ['application/vnd.ms-powerpoint','download' => true],
-        'pps' => ['application/vnd.ms-powerpoint','download' => true],
-        'ppa' => ['application/vnd.ms-powerpoint','download' => true],
-        'pptx' => ['application/vnd.openxmlformats-officedocument.presentationml.presentation','download' => true],
-        'potx' => ['application/vnd.openxmlformats-officedocument.presentationml.template','download' => true],
-        'ppsx' => ['application/vnd.openxmlformats-officedocument.presentationml.slideshow','download' => true],
-        'ppam' => ['application/vnd.ms-powerpoint.addin.macroEnabled.12','download' => true],
-        'pptm' => ['application/vnd.ms-powerpoint.presentation.macroEnabled.12','download' => true],
-        'potm' => ['application/vnd.ms-powerpoint.template.macroEnabled.12','download' => true],
-        'ppsm' => ['application/vnd.ms-powerpoint.slideshow.macroEnabled.12','download' => true],
+        'dotm' => ['application/vnd.ms-word.template.macroEnabled.12', 'download' => true],
+        'xls' => ['application/vnd.ms-excel', 'download' => true],
+        'xlt' => ['application/vnd.ms-excel', 'download' => true],
+        'xla' => ['application/vnd.ms-excel', 'download' => true],
+        'xlsx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'download' => true],
+        'xltx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.template', 'download' => true],
+        'xlsm' => ['application/vnd.ms-excel.sheet.macroEnabled.12', 'download' => true],
+        'xltm' => ['application/vnd.ms-excel.template.macroEnabled.12', 'download' => true],
+        'xlam' => ['application/vnd.ms-excel.addin.macroEnabled.12', 'download' => true],
+        'xlsb' => ['application/vnd.ms-excel.sheet.binary.macroEnabled.12', 'download' => true],
+        'ppt' => ['application/vnd.ms-powerpoint', 'download' => true],
+        'pot' => ['application/vnd.ms-powerpoint', 'download' => true],
+        'pps' => ['application/vnd.ms-powerpoint', 'download' => true],
+        'ppa' => ['application/vnd.ms-powerpoint', 'download' => true],
+        'pptx' => ['application/vnd.openxmlformats-officedocument.presentationml.presentation', 'download' => true],
+        'potx' => ['application/vnd.openxmlformats-officedocument.presentationml.template', 'download' => true],
+        'ppsx' => ['application/vnd.openxmlformats-officedocument.presentationml.slideshow', 'download' => true],
+        'ppam' => ['application/vnd.ms-powerpoint.addin.macroEnabled.12', 'download' => true],
+        'pptm' => ['application/vnd.ms-powerpoint.presentation.macroEnabled.12', 'download' => true],
+        'potm' => ['application/vnd.ms-powerpoint.template.macroEnabled.12', 'download' => true],
+        'ppsm' => ['application/vnd.ms-powerpoint.slideshow.macroEnabled.12', 'download' => true],
         'pdf' => ['application/pdf', 'download' => false],
         'jpg' => ['application/jpeg', 'download' => false]
     ];
-    
-    
 
     /**
      * @param \PDO $pdo Recebe uma instância do PDO
@@ -182,13 +180,13 @@ class DocumentosModel extends ModelCRUD
             msg::showMsg('Ocorreu um erro ao enviar a arquivo.'
                 . 'Verifique se o tamanho do arquivo ultrapassa <strong>10MB</strong>.', 'danger');
         }
-        
+
         $extension = $this->validateExtesion($dados['arquivo']);
-        
+
         if (!$extension) {
             msg::showMsg('O sistema não suporta o arquivo enviado.', 'danger');
         }
-        
+
         $diretorio = 'files_uploads/' . $extension . '/';
         @mkdir($diretorio, '0777');
 
@@ -223,6 +221,7 @@ class DocumentosModel extends ModelCRUD
 
         // Valida dados
         $this->validateAll($User);
+        $this->notDuplicate();
 
         $dados = [
             'titulo' => $this->getTitulo(),
@@ -280,6 +279,10 @@ class DocumentosModel extends ModelCRUD
     public function remover($id)
     {
         if ($this->delete($id)) {
+            $document = $this->findById($id);
+            @unlink('files_uploads/' . $document['extensao'] . '/' . $document['id'] . '.' . $document['extensao']);
+            unset($document);
+
             header('Location: ' . APPDIR . 'documentos/visualizar/');
         }
     }
@@ -295,98 +298,15 @@ class DocumentosModel extends ModelCRUD
             ->setFilters()
             ->where('id', '!=', $this->getId())
             ->whereOperator('AND')
-            ->where('titulo', '=', $this->getTitulo());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Título</strong>.'
-                . '<script>focusOn("titulo")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo user_id
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-            ->setFields(['id'])
-            ->setFilters()
-            ->where('id', '!=', $this->getId())
-            ->whereOperator('AND')
-            ->where('user_id', '=', $this->getUserId());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Usuário</strong>.'
-                . '<script>focusOn("user_id")</script>', 'warning');
-        }
-
-        // Não deixa duplicar os valores do campo extensao
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-            ->setFields(['id'])
-            ->setFilters()
-            ->where('id', '!=', $this->getId())
-            ->whereOperator('AND')
-            ->where('extensao', '=', $this->getExtensao());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Extensão</strong>.'
-                . '<script>focusOn("extensao")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo revisao
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-            ->setFields(['id'])
-            ->setFilters()
-            ->where('id', '!=', $this->getId())
-            ->whereOperator('AND')
-            ->where('revisao', '=', $this->getRevisao());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Revisão</strong>.'
-                . '<script>focusOn("revisao")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo tamanho
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-            ->setFields(['id'])
-            ->setFilters()
-            ->where('id', '!=', $this->getId())
-            ->whereOperator('AND')
-            ->where('tamanho', '=', $this->getTamanho());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Tamanho</strong>.'
-                . '<script>focusOn("tamanho")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo departamento
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-            ->setFields(['id'])
-            ->setFilters()
-            ->where('id', '!=', $this->getId())
-            ->whereOperator('AND')
-            ->where('departamento', '=', $this->getDepartamento());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Departamento</strong>.'
-                . '<script>focusOn("departamento")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo classificacao_id
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-            ->setFields(['id'])
-            ->setFilters()
-            ->where('id', '!=', $this->getId())
+            ->where('titulo', '=', $this->getTitulo())
             ->whereOperator('AND')
             ->where('classificacao_id', '=', $this->getClassificacaoId());
         $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
 
         if ($result) {
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Classificação</strong>.'
-                . '<script>focusOn("classificacao_id")</script>', 'warning');
+                . '<strong>Título</strong> para esta classificação.'
+                . '<script>focusOn("titulo")</script>', 'warning');
         }
     }
     /*
@@ -395,12 +315,13 @@ class DocumentosModel extends ModelCRUD
 
     private function validateAll($User)
     {
-        $extensao = $this->validateExtesion($_FILES['arquivo']);
+        $arquivo = isset($_FILES['arquivo']) ? $_FILES['arquivo'] : null;
+        $size = isset($_FILES['arquivo']['size']) ? $_FILES['arquivo']['size'] : null;
+        $extensao = $this->validateExtesion($arquivo);
 
-        if (!$extensao) {
+        if (!$extensao && $arquivo) {
             msg::showMsg('O sistema não suporta o arquivo enviado.', 'danger');
         }
-
 
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
@@ -408,7 +329,7 @@ class DocumentosModel extends ModelCRUD
         $this->setUserId($User['id']);
         $this->setExtensao($extensao);
         $this->setRevisao(filter_input(INPUT_POST, 'revisao'));
-        $this->setTamanho($_FILES['arquivo']['size']);
+        $this->setTamanho($size);
         $this->setLink(filter_input(INPUT_POST, 'link'));
         $this->setDepartamento($User['departamento']);
         $this->setClassificacaoId(filter_input(INPUT_POST, 'classificacao_id'));
@@ -489,13 +410,13 @@ class DocumentosModel extends ModelCRUD
         if (array_key_exists($extensao, $this->arrExtensionToMimeType)) {
             $mimeType = $this->arrExtensionToMimeType[$extensao];
             header("Content-Type: {$mimeType[0]}");
-            
+
             if ($mimeType['download']) {
                 header("Content-Disposition: attachment; filename=" . time() . ".$extensao");
             }
             return $mimeType;
         }
-        
+
         return false;
     }
 }
