@@ -8,7 +8,6 @@
 namespace App\Models;
 
 use HTR\System\ModelCRUD;
-use HTR\Helpers\Mensagem\Mensagem as msg;
 use App\Models\DocumentosModel;
 
 class RankingsModel extends ModelCRUD
@@ -51,5 +50,23 @@ class RankingsModel extends ModelCRUD
         $this->insert($dados);
 
         return $documentosModel->loadPublicacao($documento);
+    }
+    
+    public function returnAllRankingByClassificacao($classificacaoId)
+    {
+        $arrRanking = [];
+        $queryString = 'SELECT doc.id, COUNT(ran.id) AS ranking FROM `documentos` AS doc
+            INNER JOIN rankings AS ran ON ran.documento_id = doc.id
+            WHERE doc.classificacao_id = ?
+            GROUP BY doc.id';
+        $stmt = $this->pdo->prepare($queryString);
+        $stmt->execute([$classificacaoId]);
+        $rankings = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        
+        foreach ($rankings as $ranking) {
+            $arrRanking[$ranking['id']] = $ranking['ranking'];
+        }
+        
+        return $arrRanking;
     }
 }
