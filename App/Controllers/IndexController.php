@@ -34,13 +34,14 @@ class IndexController extends Controller implements CtrlInterface
     public function indexAction()
     {
         // Renderiza a view index com o layout blank
-        $this->render('Index.index');
+        //$this->render('Index.index');
+        $this->dashboardAction();
     }
     
     public function dashboardAction()
     {
         $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
-        $classificacao = new Classificacao();
+        $classificacao = new Classificacao($this->access->pdo);
         $this->view['resultClassificacao'] = $classificacao->returnClassificacao($this->view['userLoggedIn']);
         //Renderiza a view dashboard
         $this->render('Index.dashboard');
@@ -56,12 +57,17 @@ class IndexController extends Controller implements CtrlInterface
     }
     
     public function filtroCategoriaAction(){        
-        $documentos = new Documentos();
+        $documentos = new Documentos($this->access->pdo);
+        $ranking = new RankingsModel($this->access->pdo);
+        
         $find = $this->getParam('id');
 
         $documentos->filterByCategoria($this->getParam('pagina'), $find);
         $this->view['result'] = $documentos->getResultadoPaginator();
         $this->view['btn'] = $documentos->getNavePaginator();
+        
+        $this->view['rankingTotal'] = $ranking->findAll();
+        $this->view['ranking'] = $ranking->returnAllRankingByClassificacao($find);
         
         $this->render('Index.filtro_categoria');
     }
