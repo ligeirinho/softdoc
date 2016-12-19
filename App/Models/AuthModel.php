@@ -301,7 +301,9 @@ class AuthModel extends CRUD
     private function registerSession($dados)
     {
         $session = new Session();
-        $session->startSession();
+        if (!isset($_SESSION['_tokenId'])) {
+            $session->startSession();
+        }
         $_SESSION['token'] = $session->getToken();
         $_SESSION['userId'] = $dados['id'];
         echo '<meta http-equiv="refresh" content="0;URL=' . APPDIR . '" />'
