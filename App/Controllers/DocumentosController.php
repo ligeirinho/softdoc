@@ -91,7 +91,6 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function visualizarAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         // Atribui os resultados retornados pela consulta
