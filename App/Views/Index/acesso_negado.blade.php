@@ -10,20 +10,16 @@
 }
 .title {
     font-family: "TrendexLightSSi";
-    font-size: 64px;
+    font-size: 28px;
 }
 .sub-title {
-    font-size: 28px;
+    font-size: 14px;
 }
 </style>
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12 title" style="margin-top: 10%; text-align: center;">
-            <span class="title">HTR Firebird Framework<br>
-                <span class="sub-title">
-                    Laus Deo - Programming est ars
-                </span>
-            </span>
+            <span class="title">Acesso negado para: {{$uri}}</span>
         </div>
         <!-- /.col-lg-12 -->
     </div>

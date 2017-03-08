@@ -20,9 +20,9 @@ class DepartamentoController extends Controller implements ControllerInterface
     // Atributo que guarda o Objeto de Proteção de Páginas (Access)
     private $access;
 
-    public function __construct()
+    public function __construct($auth)
     {
-        parent::__construct();
+        parent::__construct($auth);
 
         $this->view['controller'] = APPDIR . 'departamento/';
 
@@ -30,6 +30,7 @@ class DepartamentoController extends Controller implements ControllerInterface
 
         // Instancia o Helper que auxilia na proteção de páginas e autenticação de usuários
         $this->access = new Access();
+        $this->view['userLoggedIn'] = $this->auth->responseArray()['data_user'];
     }
 
     /**

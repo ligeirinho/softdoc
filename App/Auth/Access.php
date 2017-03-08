@@ -2,13 +2,15 @@
 
 namespace App\Auth;
 
+use App\Auth\Autenticacao;
+
 class Access extends Autenticacao
 {
     // URI que não queremos realizar a verificação
     private $uriException = [
-        '/softdoc/index/ler/',
-		'/softdoc/auth/logout/'
-    ];
+		"/agendamento/auth/logout/"
+	];
+
     private $accessUriException = false;
 
     public function verificarUri()

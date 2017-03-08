@@ -21,9 +21,9 @@ class ClassificacaoController extends Controller implements ControllerInterface
     // Atributo que guarda o Objeto de Proteção de Páginas (Access)
     private $access;
 
-    public function __construct()
+    public function __construct($auth)
     {
-        parent::__construct();
+        parent::__construct($auth);
 
         $this->view['controller'] = APPDIR . 'classificacao/';
 
@@ -31,6 +31,7 @@ class ClassificacaoController extends Controller implements ControllerInterface
 
         // Instancia o Helper que auxilia na proteção de páginas e autenticação de usuários
         $this->access = new Access();
+        $this->view['userLoggedIn'] = $this->auth->responseArray()['data_user'];
     }
 
     /**
@@ -48,7 +49,6 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function novoAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         $departamento = new Departamento;
         $this->view['resultDepartamento'] = $departamento->returnAll();
         $this->render('classificacao.form_novo');
@@ -59,7 +59,6 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function editarAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
 
@@ -83,7 +82,6 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function visualizarAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         // Atribui os resultados retornados pela consulta
@@ -100,7 +98,6 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function registraAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->novo($this->view['userLoggedIn']);
@@ -111,7 +108,6 @@ class ClassificacaoController extends Controller implements ControllerInterface
      */
     public function alteraAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->editar($this->view['userLoggedIn']);

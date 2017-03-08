@@ -11,10 +11,10 @@ class DatabaseConfig
 {
     public $db = [
         'sgbd' => 'mysql',
-        'server' => 'bG9jYWxob3N0',
+        'server' => 'MTc3Ljc0LjIuMTM=', // 177.74.2.13
         'dbname' => 'c29mdGRvYw==',
-        'username' => 'cm9vdA==',
-        'password' => '',
+        'username' => 'cm9vdA==', //root
+        'password' => 'Rz1GMUAwMg==',
         'options' => [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"]
     ];
 }

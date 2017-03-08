@@ -2,11 +2,15 @@
  * @view  documentos/index.blade.php
  * @created  at 03-11-2016 12:49:36
  * - Criado Automaticamente pelo HTR Assist
- -->
+-->
 
 
 
 <?php $__env->startSection('title', 'Lista de Documentos'); ?>
+
+<?php $__env->startSection('style'); ?>
+<link href="<?php echo e(APPDIR); ?>font/flaticon.css" rel="stylesheet">
+<?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
 <!-- Page Content -->
@@ -34,20 +38,40 @@
                     <tbody>
                         <?php $__currentLoopData = $result; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getFirstLoop(); ?>
                         <tr>
-                            <td><?php echo e($value['titulo']); ?></td>
-                            <td><?php echo e($value['name']); ?></td>
-                            <td><?php echo e($value['extensao']); ?></td>
-                            <td><?php echo e($value['tamanho']); ?></td>
-                            <td><?php echo e($value['departamento']); ?></td>
-                            <td><?php echo e($value['classificacao']); ?></td>
+                            <td>
+                                <a href="<?php echo e(APPDIR); ?>index/ler/id/<?php echo e($value['id']); ?>">
+                                    <i class='fa fa-external-link'></i> <?php echo e($value['titulo']); ?>
+
+                                </a>
+                            </td>
+                            <td>
+                                <a href="<?php echo e(APPDIR); ?>auth/editar/id/<?php echo e($userLoggedIn['id']); ?>">
+                                    <?php echo e($value['name']); ?>
+
+                                </a>
+                            </td>
+                            <td>
+                                <i class="flaticon-<?php echo e($value['extensao']); ?>-file-format text-primary"></i>
+                            </td>
+                            <td>
+                                <?= $value['tamanho'] ? round(number_format($value['tamanho'], 2, '', '.')) . 'KB' : '<span class="badge">link</span>'; ?>
+                            </td>
+                            <td>
+                                <?php echo e($value['departamento']); ?>
+
+                            </td>
+                            <td>
+                                <?php echo e($value['classificacao']); ?>
+
+                            </td>
                             <td>
                                 <a href="<?php echo e($controller); ?>editar/id/<?php echo e($value['id']); ?>" class="btn btn-success">
-                                    <i class="fa fa-edit"></i> Editar
+                                    <i class="fa fa-edit"></i>
                                 </a>
                                 <a href="#"
                                    onclick="confirmar('Deseja REMOVER este registro?', '<?php echo e($controller); ?>eliminar/id/<?php echo e($value['id']); ?>')"
                                    class="btn btn-danger">
-                                    <i class="fa fa-trash"></i> Eliminar
+                                    <i class="fa fa-trash"></i>
                                 </a>
                             </td>
                         </tr>

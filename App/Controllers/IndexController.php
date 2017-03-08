@@ -19,12 +19,13 @@ class IndexController extends Controller implements CtrlInterface
     /*
      * Inicia os atributos usados na View
      */
-    public function __construct()
+    public function __construct($auth)
     {
         $this->view['controller'] =  APPDIR . 'index/';
-        parent::__construct();
+        parent::__construct($auth);
         // Instancia o Helper que auxilia na proteção de páginas e autenticação de usuários
         $this->access = new Access();
+        $this->view['userLoggedIn'] = $this->auth->responseArray()['data_user'];
     }
 
     /*
@@ -40,7 +41,6 @@ class IndexController extends Controller implements CtrlInterface
     
     public function dashboardAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         $classificacao = new Classificacao($this->access->pdo);
         $this->view['resultClassificacao'] = $classificacao->returnClassificacao($this->view['userLoggedIn']);
         //Renderiza a view dashboard
@@ -70,5 +70,11 @@ class IndexController extends Controller implements CtrlInterface
         $this->view['ranking'] = $ranking->returnAllRankingByClassificacao($find);
         
         $this->render('Index.filtro_categoria');
+    }
+
+    public function accessDenied($uri)
+    {
+        $this->view['uri'] = $uri;
+        $this->render('Index.acesso_negado');
     }
 }

@@ -13,7 +13,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                         <li><a href="{{APPDIR}}auth/editar/id/{{$userLoggedIn['id']}}">
-                                <i class="fa fa-user fa-fw"> {{$userLoggedIn['name']}}</i>
+                                <i class="fa fa-user fa-fw"> {{$userLoggedIn['nome']}}</i>
                             </a>
                         </li>
                         <li class="divider"></li>

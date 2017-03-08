@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Bruno Monteiro">
+    <meta name="author" content="Bruno Monteiro, Paulo Henrique">
 
     <title><?php echo $__env->yieldContent('title'); ?> :: <?php echo e(APPNAM); ?> <?php echo e(APPVER); ?> ::</title>
 

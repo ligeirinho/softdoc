@@ -19,7 +19,7 @@
                 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title" style="border: 0;">
-                            <a href="{{APPDIR}}Acesso/dashboard" class="site_title">
+                            <a href="{{APPDIR}}index" class="site_title">
                                 <i class="fa fa-book fa-flip-horizontal"></i>
                                 <span style="font-size: 14px !important;">{{APPNAM}}</span>
                             </a>

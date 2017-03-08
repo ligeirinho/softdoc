@@ -19,9 +19,9 @@ class AuthController extends Controller implements CtrlInterface
     /*
      * Inicia os atributos usados na View
      */
-    public function __construct()
+    public function __construct($auth)
     {
-        parent::__construct();
+        parent::__construct($auth);
         $this->view['controller'] = APPDIR . 'auth/';
         // Instancia o Helper que auxilia na proteção e autenticação de usuários
         $this->access = new Access();
@@ -41,7 +41,7 @@ class AuthController extends Controller implements CtrlInterface
     {
         // Inicia a proteção das páginas com permissão de acesso apenas para
         // usuários autenticados com o nível 1.
-        //$this->view['userLoggedIn'] = $this->access->authenticAccess([1]);
+        $this->view['userLoggedIn'] = $this->access->authenticAccess([1]);
         
         // Renderiza a página
         $this->render('Auth.form_novo');
@@ -91,7 +91,7 @@ class AuthController extends Controller implements CtrlInterface
     {
         // Inicia a proteção das páginas com permissão de acesso apenas para
         // usuários autenticados com o nível 1.
-        //$this->access->authenticAccess([1]);
+        $this->access->authenticAccess([1]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->novo();
@@ -118,8 +118,9 @@ class AuthController extends Controller implements CtrlInterface
     public function logoutAction()
     {
         // Instanciando o Model padrão usado.
-        $model = new $this->modelDefault($this->access->pdo);  
-        $model->logout();
+        //$model = new $this->modelDefault($this->access->pdo);  
+        //$model->logout();
+		$this->auth->logout();
         header('Location:'. APPDIR);
     }
 

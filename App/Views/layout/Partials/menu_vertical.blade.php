@@ -23,6 +23,14 @@
                 <!-- /.child_menu -->
             </li>
             <li>
+                <a><i class="fa fa-bank fa-fw"></i> Departamento<span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{{APPDIR}}departamento/">Gerenciar Departamento</a></li>
+                    <li><a href="{{APPDIR}}departamento/novo/">Novo Departamento</a></li>
+                </ul>
+                <!-- /.child_menu -->
+            </li>
+            <li>
                 <a>
                     <i class="fa fa-users fa-fw"></i> Usuários<span class="fa fa-chevron-down"></span>
                 </a>

@@ -13,13 +13,13 @@
         <?php echo $__env->make('layout.Common.styles', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     </head>
 
-    <body class="nav-md">
+    <body class="nav-sm">
         <div class="container body">
             <div class="main_container">
                 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title" style="border: 0;">
-                            <a href="<?php echo e(APPDIR); ?>Acesso/dashboard" class="site_title">
+                            <a href="<?php echo e(APPDIR); ?>index" class="site_title">
                                 <i class="fa fa-book fa-flip-horizontal"></i>
                                 <span style="font-size: 14px !important;"><?php echo e(APPNAM); ?></span>
                             </a>

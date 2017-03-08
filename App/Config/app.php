@@ -15,7 +15,7 @@ define('DS', DIRECTORY_SEPARATOR);
 // Altere o valor somente se a aplicação não estiver rodando em um
 // subdomínio específico.
 // Default Value : /
-define('APPDIR', '/softdoc/public_html/');
+define('APPDIR', '/softdoc/');
 // Nome da Aplicação
 define('APPNAM', 'Softdoc');
 // Versão da Aplicação
@@ -25,11 +25,11 @@ define('APPVER', '1.0');
 // para alterar de forma segura use o comando configkey do ATR Assit
 // para mais detalhes digite o comando
 // $ php assist configkey
-define('STRSAL', 'c799fe780aa9e4fc495b09d20763c7858f26cb45');
+define('STRSAL', '1fd0d5b8e98f3cfe8d632b7eccf82a8090545d8b');
 // Nome do Domínio onde o Aplicativo foi instalado
 // Atenção: é de suma importância que seja configurado um subdomínio específico
 // para a correta instalação da aplicação.
-define('DOMAIN', 'localhost');
+define('DOMAIN', '10.88.3.7');
 // Contato do Administrador do Sistema
 define('ADCONT', 'E-Mail: seplan@pa.gov.br;<br>Fone: +55 91 3321-4975');
 // Define o nome da entidade (tabela do Banco de Dados) usada para login
@@ -45,7 +45,7 @@ define('COLMOP', 'change_password');
 // Este recurso é usado quando não há suporte a virtual hosts, onde o diretório
 // dos arquivos da aplicação não poderão ficar acessíveis ao público
 // Default Value: ../
-define('DRINST', '../');
+define('DRINST', '../softdoc_core/');
 // redirecionamento padrão após o login
 define('REDLOG', APPDIR . 'documentos/');
 

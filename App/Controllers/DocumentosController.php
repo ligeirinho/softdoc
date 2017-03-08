@@ -22,15 +22,16 @@ class DocumentosController extends Controller implements ControllerInterface
     // Atributo que guarda o Objeto de Proteção de Páginas (Access)
     private $access;
 
-    public function __construct()
+    public function __construct($auth)
     {
-        parent::__construct();
+        parent::__construct($auth);
         
         $this->view['controller'] = APPDIR . 'documentos/';
         
         $this->modelDefault = DocumentosModel::class;
         // Instancia o Helper que auxilia na proteção de páginas e autenticação de usuários
         $this->access = new Access();
+        $this->view['userLoggedIn'] = $this->auth->responseArray()['data_user'];
     }
 
     /**
@@ -48,7 +49,6 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function novoAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         $departamento = new Departamento;
         $this->view['resultDepartamento'] = $departamento->returnAll();
      
@@ -62,7 +62,6 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function editarAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         
@@ -107,10 +106,15 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function registraAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->novo($this->view['userLoggedIn']);
+    }
+    
+    public function enviarEmailAction()
+    {
+        $model = new $this->modelDefault($this->access->pdo);
+        $model->enviarEmail();
     }
 
     /**
@@ -118,7 +122,6 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function alteraAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->editar($this->view['userLoggedIn']);
