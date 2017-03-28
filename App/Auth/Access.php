@@ -8,7 +8,7 @@ class Access extends Autenticacao
 {
     // URI que não queremos realizar a verificação
     private $uriException = [
-		"/agendamento/auth/logout/"
+		"/softdoc/auth/logout/"
 	];
 
     private $accessUriException = false;

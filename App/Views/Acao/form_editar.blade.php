@@ -1,12 +1,12 @@
 <!--
- * @view departamento/form_editar.blade.php
- * @created at 03-11-2016 12:52:14
+ * @view Acao/form_editar.blade.php
+ * @created at 27-03-2017 21:03:31
  * - Criado Automaticamente pelo HTR Assist
  -->
 
 @extends('layout.default')
 
-@section('title', 'Inserção de Departamento')
+@section('title', 'Inserção de Acao')
 
 @section('content')
 <!-- Page Content -->
@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h4 class="page-header">Formulário de edição de Departamento</h4>
+                <h4 class="page-header">Formulário de edição de Acao</h4>
                 
             </div>
             <!-- /.col-lg-12 -->
@@ -34,18 +34,20 @@
                             {!!$token!!}
                             <input type="hidden" name="id" value="{{$result['id']}}">
                         <div class="row">
-                            
+                            <div class="col-lg-6">
+                            </div>
+
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Departamento</label>
+                                    <label>Nome</label>
                                     <input type="text"
-                                           id="nome_departamento"
-                                           name="nome_departamento"
-                                           placeholder="Departamento"
+                                           id="nome_acao"
+                                           name="nome_acao"
+                                           placeholder="Nome"
                                            class="form-control"
-                                           value="{{$result['nome_departamento']}}"
-                                           maxlength="200"
-                                           required>
+                                           value="{{$result['nome_acao']}}"
+                                           maxlength="45"
+                                           >
                                 </div>
 
                                 <div class="form-group">

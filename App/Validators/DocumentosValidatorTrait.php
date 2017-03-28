@@ -44,12 +44,12 @@ trait DocumentosValidatorTrait
         }
     }
 
-    protected function validateClassificacaoId()
+    protected function validateGrupoId()
     {
-        $value = v::intVal()->notEmpty()->length(1, 5)->validate($this->getClassificacaoId());
+        $value = v::intVal()->notEmpty()->length(1, 5)->validate($this->getGrupo());
         if (!$value) {
-            msg::showMsg('O campo Classificação deve ser preenchido corretamente.'
-                . '<script>focusOn("classificacao_id");</script>', 'danger');
+            msg::showMsg('O campo Grupo deve ser preenchido corretamente.'
+                . '<script>focusOn("grupo");</script>', 'danger');
             return $this;
         }
     }

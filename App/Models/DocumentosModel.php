@@ -21,7 +21,7 @@ class DocumentosModel extends ModelCRUD
     /**
      * Entidade padrão do Model
      */
-    protected $entidade = 'documentos';
+    protected $entidade = 'softdoc_documentos';
     protected $id;
     protected $titulo;
     protected $userId;
@@ -108,19 +108,16 @@ class DocumentosModel extends ModelCRUD
         return $this->findAll();
     }
 
-    public function paginator($pagina)
+    public function paginator($pagina, $find)
     {
         $dados = [
             'pdo' => $this->pdo,
-            'select' => ' documentos.id, titulo, auth.name, extensao, '
-            . 'tamanho, departamento.nome as departamento, '
-            . 'classificacao.nome_classificacao as classificacao',
-            'entidade' => '`documentos`
-			INNER JOIN auth ON auth.id=user_id
-                        INNER JOIN departamento ON departamento.id=auth.departamento
-                        INNER JOIN classificacao ON classificacao.id=classificacao_id',
+            'select' => 'doc.id, doc.titulo, users.nome, doc.extensao, doc.tamanho, doc.link, grupo.nome_grupo, doc.criado ',
+            'entidade' => $this->entidade 
+                .' as doc INNER JOIN users ON users.id = doc.user_id
+                  INNER JOIN softdoc_grupo as grupo ON grupo.id = doc.grupo_id',
             'pagina' => $pagina,
-            'maxResult' => 20
+            'maxResult' => 20,
         ];
 
 
@@ -146,13 +143,13 @@ class DocumentosModel extends ModelCRUD
          */
         $dados = [
             'pdo' => $this->pdo,
-            'select' => ' documentos.id, titulo, auth.name, extensao, '
-            . 'tamanho, departamento.nome as departamento, documentos.criado, '
-            . 'classificacao.nome_classificacao as classificacao',
-            'entidade' => '`documentos`
-			INNER JOIN auth ON auth.id=user_id
-                        INNER JOIN departamento ON departamento.id=auth.departamento
-                        INNER JOIN classificacao ON classificacao.id=classificacao_id',
+            'select' => ' softdoc_documentos.id, titulo, users.nome, extensao, '
+            . 'tamanho, dept.nome_departamento as departamento, softdoc_documentos.criado, '
+            . 'cls.nome_classificacao as classificacao',
+            'entidade' => '`softdoc_documentos`
+                INNER JOIN users ON users.id=user_id
+                INNER JOIN bas_departamento as dept ON dept.id = users.departamento
+                INNER JOIN softdoc_classificacao as cls ON cls.id = classificacao_id',
             'where' => 'classificacao_id = ?',
             'bindValue' => [$find],
             'pagina' => $pagina,
@@ -235,7 +232,7 @@ class DocumentosModel extends ModelCRUD
         $Mailer->Port = 465;
 
         //Dados do e-mail de saida - autenticação
-        $Mailer->Username = 'phcgaia11@yahoo.com.br';
+        $Mailer->Username = 'extertises@seplan.pa.gov.br';
         $Mailer->Password = '';
 
         //E-mail remetente (deve ser o mesmo de quem fez a autenticação)
@@ -280,8 +277,7 @@ class DocumentosModel extends ModelCRUD
             'extensao' => $this->getExtensao(),
             'tamanho' => $this->getTamanho(),
             'link' => $this->getLink(),
-            'departamento' => $this->getDepartamento(),
-            'classificacao_id' => $this->getClassificacaoId(),
+            'grupo_id' => $this->getGrupo(),
             'criado' => time(),
         ];
 
@@ -351,12 +347,12 @@ class DocumentosModel extends ModelCRUD
             ->whereOperator('AND')
             ->where('titulo', '=', $this->getTitulo())
             ->whereOperator('AND')
-            ->where('classificacao_id', '=', $this->getClassificacaoId());
+            ->where('grupo_id', '=', $this->getGrupo());
         $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
 
         if ($result) {
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Título</strong> para esta classificação.'
+                . '<strong>Título</strong> para este Grupo.'
                 . '<script>focusOn("titulo")</script>', 'warning');
         }
     }
@@ -382,13 +378,12 @@ class DocumentosModel extends ModelCRUD
         $this->setRevisao(filter_input(INPUT_POST, 'revisao'));
         $this->setTamanho($size);
         $this->setLink(filter_input(INPUT_POST, 'link'));
-        $this->setDepartamento($User['departamento']);
-        $this->setClassificacaoId(filter_input(INPUT_POST, 'classificacao_id'));
+        $this->setGrupo(filter_input(INPUT_POST, 'grupo'));
 
         // Inicia a Validação dos dados
         $this->validateId();
         $this->validateTitulo();
-        $this->validateClassificacaoId();
+        $this->validateGrupoId();
     }
 
     private function validateExtesion($arquivo)

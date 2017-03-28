@@ -15,7 +15,7 @@ class Autenticacao
     private $response;
 
     // URL que aponta para o servidor de serviço
-    const URL_SERVICE = 'http://10.88.3.7:88/softdoc/';
+    const URL_SERVICE = 'http://10.88.3.7:88/access/';
     // Rota para a verificação de URI
     const ROUTE_TO_VERIFY_URI = '/auth/verify/';
     // Rota para a verificação de Ações
@@ -31,7 +31,7 @@ class Autenticacao
     // DOMÍNIO PADRÃO
     const DOMAIN = '10.88.3.7';
     // token da applicação
-    const TOKEN_APP = 'f4674d075c5d2e50630abad4f948a576105633a9';
+    const TOKEN_APP = 'f6e7c52ccdef098be8fd7ec29eb7a4c659c3a674';
 
     function setPathCookieRepository($pathCookieRepository)
     {

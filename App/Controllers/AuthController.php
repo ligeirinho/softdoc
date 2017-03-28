@@ -25,6 +25,7 @@ class AuthController extends Controller implements CtrlInterface
         $this->view['controller'] = APPDIR . 'auth/';
         // Instancia o Helper que auxilia na proteção e autenticação de usuários
         $this->access = new Access();
+        $this->view['userLoggedIn'] = $this->auth->responseArray()['data_user'];
     }
 
 
@@ -39,10 +40,6 @@ class AuthController extends Controller implements CtrlInterface
     
     public function novoAction()
     {
-        // Inicia a proteção das páginas com permissão de acesso apenas para
-        // usuários autenticados com o nível 1.
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1]);
-        
         // Renderiza a página
         $this->render('Auth.form_novo');
         
@@ -50,7 +47,6 @@ class AuthController extends Controller implements CtrlInterface
     
     public function editarAction()
     {
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         
@@ -74,9 +70,6 @@ class AuthController extends Controller implements CtrlInterface
 
     public function visualizarAction()
     {
-        // Inicia a proteção das páginas com permissão de acesso apenas para
-        // usuários autenticados com o nível 1.
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
 
@@ -89,9 +82,6 @@ class AuthController extends Controller implements CtrlInterface
     
     public function registraAction()
     {
-        // Inicia a proteção das páginas com permissão de acesso apenas para
-        // usuários autenticados com o nível 1.
-        $this->access->authenticAccess([1]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->novo();
@@ -99,9 +89,6 @@ class AuthController extends Controller implements CtrlInterface
     
     public function alteraAction()
     {
-        // Inicia a proteção das páginas com permissão de acesso apenas para
-        // usuários autenticados com o nível 1 e 2.
-        $this->access->authenticAccess([1,2]);
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->editar();
@@ -134,7 +121,6 @@ class AuthController extends Controller implements CtrlInterface
     public function mudarSenhaAction()
     {
         $this->access->breakRedirect();
-        $this->view['userLoggedIn'] = $this->access->authenticAccess([1,2]);
 
         $this->render('Auth.form_mudar_senha');
     }
@@ -143,7 +129,6 @@ class AuthController extends Controller implements CtrlInterface
     {
         $model = new $this->modelDefault($this->access->pdo);
         $this->access->breakRedirect();
-        $user = $this->access->authenticAccess([1,2]);
         $dados['id'] = $user['id'];
         $dados['password'] = filter_input(INPUT_POST, 'password');
         // Instanciando o Model padrão usado.

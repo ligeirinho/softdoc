@@ -47,38 +47,21 @@
                                            required>
                                 </div>
                                 
+                                
                                 <div class="form-group">
-                                    <label>Departamento</label>
-                                    <select
-                                           id="departamento"
-                                           name="departamento"
+                                    <label>Grupo</label>
+                                    <select 
+                                           id="grupo"
+                                           name="grupo"
                                            class="form-control"
                                            required>
-                                           @foreach ($resultDepartamento as $value)
+                                           @foreach ($resultGrupos as $value)
                                            <option value="{{$value['id']}}"
-                                               @if ($result['departamento'] == $value['id'])
-                                                   selected
-                                               @endif
-                                               >
-                                               {{$value['nome']}}
-                                           </option>
-                                           @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Classificação</label>
-                                    <select
-                                           id="classificacao_id"
-                                           name="classificacao_id"
-                                           class="form-control"
-                                           required>
-                                           @foreach ($resultClassificacao as $value)
-                                           <option value="{{$value['id']}}"
-                                               @if ($result['classificacao_id'] == $value['id'])
-                                                   selected
-                                               @endif
-                                               >
-                                               {{$value['nome_classificacao']}}
+                                                @if ($result['grupo_id'] == $value['id'])
+                                                selected
+                                            @endif
+                                            >
+                                               {{$value['nome_grupo']}}
                                            </option>
                                            @endforeach
                                     </select>

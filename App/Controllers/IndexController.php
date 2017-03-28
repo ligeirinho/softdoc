@@ -77,4 +77,11 @@ class IndexController extends Controller implements CtrlInterface
         $this->view['uri'] = $uri;
         $this->render('Index.acesso_negado');
     }
+    
+    public function acessoNegadoAction()
+    {
+		$this->view['uri'] = $this->auth->ruleUri();
+		dump($this->auth->usersExtractor()->responseArray());
+        $this->render('Index.acesso_negado');
+    }
 }

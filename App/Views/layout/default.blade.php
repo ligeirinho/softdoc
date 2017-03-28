@@ -44,7 +44,7 @@
                 <!-- footer content -->
                 <footer>
                     <div class="pull-right">
-                        Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                        <strong>Rede de Planejamento © {{date('Y')}}</strong> . Desenvolvido por DITI-SEPLAN.
                     </div>
                     <div class="clearfix"></div>
                 </footer>

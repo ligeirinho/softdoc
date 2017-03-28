@@ -1,7 +1,7 @@
 <?php
 /**
- * @model DepartamentoModel
- * @created at 03-11-2016 12:52:10
+ * @model UsuarioModel
+ * @created at 16-03-2017 14:08:50
  * - Criado Automaticamente pelo HTR Assist
  */
 
@@ -12,16 +12,24 @@ use HTR\Helpers\Mensagem\Mensagem as msg;
 use HTR\Helpers\Paginator\Paginator;
 use HTR\System\Security;
 
-class DepartamentoModel extends ModelCRUD
+class UsuarioModel extends ModelCRUD
 {
-    use \App\Validators\DepartamentoValidatorTrait;
+    use \App\Validators\UsuarioValidatorTrait;
 
     /**
      * Entidade padrão do Model
      */
-    protected $entidade = 'bas_departamento';
+    protected $entidade = 'users';
     protected $id;
-    protected $nomeDepartamento;
+    protected $nome;
+    protected $email;
+    protected $departamento;
+    protected $ramal;
+    protected $matricula;
+    protected $telefone;
+    protected $celular;
+    protected $criado;
+    protected $ativo;
 
     private $resultadoPaginator;
     private $navePaginator;
@@ -52,12 +60,14 @@ class DepartamentoModel extends ModelCRUD
          */
         $dados = [
             'pdo' => $this->pdo,
-            'entidade' => $this->entidade,
+            'select' => 'users.*, bas_departamento.nome_departamento',
+            'entidade' => $this->entidade
+             . ' INNER JOIN bas_departamento ON bas_departamento.id = users.departamento',
             'pagina' => $pagina,
             'maxResult' => 20,
             // USAR QUANDO FOR PARA DEMONSTRAR O RESULTADO DE UMA PESQUISA
             //'orderBy' => 'nome ASC',
-            'where' => 'ativo = 1',
+            'where' => 'users.ativo = 1',
             //'bindValue' => [0 => '%MONTEIRO%']
         ];
 
@@ -100,7 +110,15 @@ class DepartamentoModel extends ModelCRUD
         $this->notDuplicate();
 
        $dados = [
-          'nome_departamento' => $this->getNomeDepartamento(),
+          'nome' => $this->getNome(),
+          'email' => $this->getEmail(),
+          'departamento' => $this->getDepartamento(),
+          'ramal' => $this->getRamal(),
+          'matricula' => $this->getMatricula(),
+          'telefone' => $this->getTelefone(),
+          'celular' => $this->getCelular(),
+          'criado' => $this->getCriado(),
+          'ativo' => 1,
         ];
 
         if ($this->insert($dados)) {
@@ -122,7 +140,13 @@ class DepartamentoModel extends ModelCRUD
         $this->notDuplicate();
 
        $dados = [
-          'nome_departamento' => $this->getNomeDepartamento(),
+          'nome' => $this->getNome(),
+          'email' => $this->getEmail(),
+          'departamento' => $this->getDepartamento(),
+          'ramal' => $this->getRamal(),
+          'matricula' => $this->getMatricula(),
+          'telefone' => $this->getTelefone(),
+          'celular' => $this->getCelular(),
         ];
 
         if ($this->update($dados, $this->getId())) {
@@ -136,7 +160,7 @@ class DepartamentoModel extends ModelCRUD
     public function remover($id)
     {
         if ($this->delete($id)) {
-            header('Location: ' . APPDIR . 'departamento/visualizar/');
+            header('Location: ' . APPDIR . 'usuario/visualizar/');
         }
     }
 
@@ -145,20 +169,36 @@ class DepartamentoModel extends ModelCRUD
      */
     private function notDuplicate()
     {
-        // Não deixa duplicar os valores do campo nome_departamento
+        // Não deixa duplicar os valores do campo nome
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
                 ->setFilters()
                 ->where('id', '!=', $this->getId())
                 ->whereOperator('AND')
-                ->where('nome_departamento', '=' , $this->getNomeDepartamento());
+                ->where('nome', '=' , $this->getNome());
         $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
 
         if ($result) {
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Departamento</strong>.'
-                . '<script>focusOn("nome_departamento")</script>', 'warning');
+                . '<strong>Nome do Usuário</strong>.'
+                . '<script>focusOn("nome")</script>', 'warning');
         }
+        
+        // Não deixa duplicar os valores do campo matricula
+        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
+                ->setFields(['id'])
+                ->setFilters()
+                ->where('id', '!=', $this->getId())
+                ->whereOperator('AND')
+                ->where('matricula', '=' , $this->getMatricula());
+        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result) {
+            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
+                . '<strong>Matrícula</strong>.'
+                . '<script>focusOn("matricula")</script>', 'warning');
+        }
+        
     }
 
     /*
@@ -168,11 +208,25 @@ class DepartamentoModel extends ModelCRUD
     {
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
-        $this->setNomeDepartamento(filter_input(INPUT_POST, 'nome_departamento'));
+        $this->setNome(filter_input(INPUT_POST, 'nome'));
+        $this->setEmail(filter_input(INPUT_POST, 'email'));
+        $this->setDepartamento(filter_input(INPUT_POST, 'departamento'));
+        $this->setRamal(filter_input(INPUT_POST, 'ramal'));
+        $this->setMatricula(filter_input(INPUT_POST, 'matricula'));
+        $this->setTelefone(filter_input(INPUT_POST, 'telefone'));
+        $this->setCelular(filter_input(INPUT_POST, 'celular'));
+        $this->setCriado(time());
+        $this->setAtivo(filter_input(INPUT_POST, 'ativo'));
 
         // Inicia a Validação dos dados
-        $this->validateId();
-        $this->validateNomeDepartamento();
+        //$this->validateId();
+        $this->validateNome();
+        $this->validateEmail();
+        $this->validateDepartamento();
+        $this->validateRamal();
+        $this->validateMatricula();
+        $this->validateTelefone();
+        $this->validateCelular();
     }
 
     private function setId($value)

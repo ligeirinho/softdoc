@@ -1,7 +1,7 @@
 <?php
 /**
- * @Controller DocumentosController
- * @Created at 03-11-2016 12:49:33
+ * @Controller UsuarioController
+ * @Created at 16-03-2017 14:08:50
  * - Criado Automaticamente pelo HTR Assist
  */
 
@@ -10,10 +10,9 @@ namespace App\Controllers;
 use HTR\System\ControllerAbstract as Controller;
 use HTR\Interfaces\ControllerInterface;
 use HTR\Helpers\Access\Access;
-use App\Models\DocumentosModel;
-use App\Models\GrupoModel as Grupo;
+use App\Models\UsuarioModel;
 
-class DocumentosController extends Controller implements ControllerInterface
+class UsuarioController extends Controller implements ControllerInterface
 {
     // Model padrão usado para este Controller
     private $modelDefault;
@@ -24,12 +23,14 @@ class DocumentosController extends Controller implements ControllerInterface
     public function __construct($auth)
     {
         parent::__construct($auth);
-        
-        $this->view['controller'] = APPDIR . 'documentos/';
-        
-        $this->modelDefault = DocumentosModel::class;
+
+        $this->view['controller'] = APPDIR . 'usuario/';
+
+        $this->modelDefault = UsuarioModel::class;
+
         // Instancia o Helper que auxilia na proteção de páginas e autenticação de usuários
         $this->access = new Access();
+        
         $this->view['userLoggedIn'] = $this->auth->responseArray()['data_user'];
     }
 
@@ -48,10 +49,11 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function novoAction()
     {
-        $grupo = new Grupo($this->access->pdo);
-        
-        $this->view['resultGrupos'] = $grupo->returnAllGroupByUser($this->view['userLoggedIn']);
-        $this->render('documentos.form_novo');
+        // relação com model BasDepartamentoModel
+        $basDepartamentoModel = new \App\Models\DepartamentoModel($this->access->pdo);
+        $this->view['resultBasDepartamento'] = $basDepartamentoModel->returnAll();
+
+        $this->render('usuario.form_novo');
     }
 
     /**
@@ -61,13 +63,13 @@ class DocumentosController extends Controller implements ControllerInterface
     {
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
-        $grupo = new Grupo($this->access->pdo);
-        
-        $this->view['resultGrupos'] = $grupo->returnAllGroupByUser($this->view['userLoggedIn']);
-        
+
+        // relação com model BasDepartamentoModel
+        $basDepartamentoModel = new \App\Models\DepartamentoModel($this->access->pdo);
+        $this->view['resultBasDepartamento'] = $basDepartamentoModel->returnAll();
+
         $this->view['result'] = $model->findById($this->getParam('id'));
-        
-        $this->render('documentos.form_editar');
+        $this->render('usuario.form_editar');
     }
 
     /**
@@ -75,11 +77,11 @@ class DocumentosController extends Controller implements ControllerInterface
      */
     public function eliminarAction()
     {
-        //Instanciando o Model padrão usado.
+        // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
         $model->remover($this->getParam('id'));
     }
-    
+
     /**
      * Action responsável por eliminar os registros
      */
@@ -89,11 +91,11 @@ class DocumentosController extends Controller implements ControllerInterface
         $model = new $this->modelDefault($this->access->pdo);
         // Atribui os resultados retornados pela consulta
         // feita através do método paginator()
-        $model->paginator($this->getParam('pagina'), $this->view['userLoggedIn']['departamento']);
+        $model->paginator($this->getParam('pagina'));
         $this->view['result'] = $model->getResultadoPaginator();
         $this->view['btn'] = $model->getNavePaginator();
 
-        $this->render('documentos.index');
+        $this->render('usuario.index');
     }
 
     /**
@@ -103,13 +105,7 @@ class DocumentosController extends Controller implements ControllerInterface
     {
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
-        $model->novo($this->view['userLoggedIn']);
-    }
-    
-    public function enviarEmailAction()
-    {
-        $model = new $this->modelDefault($this->access->pdo);
-        $model->enviarEmail();
+        $model->novo();
     }
 
     /**
@@ -119,6 +115,6 @@ class DocumentosController extends Controller implements ControllerInterface
     {
         // Instanciando o Model padrão usado.
         $model = new $this->modelDefault($this->access->pdo);
-        $model->editar($this->view['userLoggedIn']);
+        $model->editar();
     }
 }

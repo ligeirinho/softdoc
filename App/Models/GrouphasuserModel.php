@@ -1,7 +1,7 @@
 <?php
 /**
- * @model DepartamentoModel
- * @created at 03-11-2016 12:52:10
+ * @model GrouphasuserModel
+ * @created at 27-03-2017 21:01:11
  * - Criado Automaticamente pelo HTR Assist
  */
 
@@ -12,16 +12,17 @@ use HTR\Helpers\Mensagem\Mensagem as msg;
 use HTR\Helpers\Paginator\Paginator;
 use HTR\System\Security;
 
-class DepartamentoModel extends ModelCRUD
+class GrouphasuserModel extends ModelCRUD
 {
-    use \App\Validators\DepartamentoValidatorTrait;
+    use \App\Validators\GrouphasuserValidatorTrait;
 
     /**
      * Entidade padrão do Model
      */
-    protected $entidade = 'bas_departamento';
+    protected $entidade = 'softdoc_user_has_group';
     protected $id;
-    protected $nomeDepartamento;
+    protected $grupoId;
+    protected $userId;
 
     private $resultadoPaginator;
     private $navePaginator;
@@ -52,13 +53,12 @@ class DepartamentoModel extends ModelCRUD
          */
         $dados = [
             'pdo' => $this->pdo,
-            'entidade' => $this->entidade,
+            'select'=>'uhg.id, grupo.nome_grupo, users.nome ',
+            'entidade' => $this->entidade
+             . ' as uhg INNER JOIN softdoc_grupo as grupo ON grupo.id = uhg.grupo_id
+                INNER JOIN users ON users.id = uhg.user_id',
             'pagina' => $pagina,
-            'maxResult' => 20,
-            // USAR QUANDO FOR PARA DEMONSTRAR O RESULTADO DE UMA PESQUISA
-            //'orderBy' => 'nome ASC',
-            'where' => 'ativo = 1',
-            //'bindValue' => [0 => '%MONTEIRO%']
+            'maxResult' => 20,            
         ];
 
         // Instacia o Helper que auxilia na paginação de páginas
@@ -100,7 +100,8 @@ class DepartamentoModel extends ModelCRUD
         $this->notDuplicate();
 
        $dados = [
-          'nome_departamento' => $this->getNomeDepartamento(),
+          'grupo_id' => $this->getGrupoId(),
+          'user_id' => $this->getUserId(),
         ];
 
         if ($this->insert($dados)) {
@@ -122,7 +123,8 @@ class DepartamentoModel extends ModelCRUD
         $this->notDuplicate();
 
        $dados = [
-          'nome_departamento' => $this->getNomeDepartamento(),
+          'grupo_id' => $this->getGrupoId(),
+          'user_id' => $this->getUserId(),
         ];
 
         if ($this->update($dados, $this->getId())) {
@@ -136,7 +138,7 @@ class DepartamentoModel extends ModelCRUD
     public function remover($id)
     {
         if ($this->delete($id)) {
-            header('Location: ' . APPDIR . 'departamento/visualizar/');
+            header('Location: ' . APPDIR . 'Grouphasuser/visualizar/');
         }
     }
 
@@ -145,19 +147,33 @@ class DepartamentoModel extends ModelCRUD
      */
     private function notDuplicate()
     {
-        // Não deixa duplicar os valores do campo nome_departamento
+        // Não deixa duplicar os valores do campo grupo_id
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
                 ->setFilters()
                 ->where('id', '!=', $this->getId())
                 ->whereOperator('AND')
-                ->where('nome_departamento', '=' , $this->getNomeDepartamento());
+                ->where('grupo_id', '=' , $this->getGrupoId());
         $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
 
         if ($result) {
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Departamento</strong>.'
-                . '<script>focusOn("nome_departamento")</script>', 'warning');
+                . '<strong>grupo_id</strong>.'
+                . '<script>focusOn("grupo_id")</script>', 'warning');
+        }
+        // Não deixa duplicar os valores do campo user_id
+        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
+                ->setFields(['id'])
+                ->setFilters()
+                ->where('id', '!=', $this->getId())
+                ->whereOperator('AND')
+                ->where('user_id', '=' , $this->getUserId());
+        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result) {
+            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
+                . '<strong>user_id</strong>.'
+                . '<script>focusOn("user_id")</script>', 'warning');
         }
     }
 
@@ -168,11 +184,13 @@ class DepartamentoModel extends ModelCRUD
     {
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
-        $this->setNomeDepartamento(filter_input(INPUT_POST, 'nome_departamento'));
+        $this->setGrupoId(filter_input(INPUT_POST, 'grupo_id'));
+        $this->setUserId(filter_input(INPUT_POST, 'user_id'));
 
         // Inicia a Validação dos dados
         $this->validateId();
-        $this->validateNomeDepartamento();
+        $this->validateGrupoId();
+        $this->validateUserId();
     }
 
     private function setId($value)

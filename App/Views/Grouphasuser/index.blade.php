@@ -1,16 +1,12 @@
 <!--
- * @view documentos/index.blade.php
- * @created at 03-11-2016 12:49:36
+ * @view Grouphasuser/index.blade.php
+ * @created at 27-03-2017 21:01:11
  * - Criado Automaticamente pelo HTR Assist
--->
+ -->
 
 @extends('layout.default')
 
-@section('title', 'Lista de Documentos')
-
-@section('style')
-<link href="{{APPDIR}}font/flaticon.css" rel="stylesheet">
-@endsection
+@section('title', 'Lista de Grouphasuser')
 
 @section('content')
 <!-- Page Content -->
@@ -18,56 +14,32 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h3>Documentos</h3>
-                <i class="fa fa-list"></i> Lista de Documentos<br>
+                <h3>Grupos de Usuário</h3>
+                <i class="fa fa-list"></i> Lista de Grupos de Usuário<br>
                 <a href="{{$controller}}novo/" class="btn btn-info">
                     <i class="fa fa-plus"></i> Novo Registro
                 </a>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Título</th>
-                            <th>Usuário</th>
-                            <th>Extensão</th>
-                            <th>Tamanho</th>
                             <th>Grupo</th>
-                            <th>Criado</th>
+                            <th>Usuário</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($result as $value)
                         <tr>
-                            <td>
-                                <a href="{{APPDIR}}index/ler/id/{{$value['id']}}">
-                                    <i class='fa fa-external-link'></i> {{$value['titulo']}}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{{APPDIR}}auth/editar/id/{{$userLoggedIn['id']}}">
-                                    {{$value['nome']}}
-                                </a>
-                            </td>
-                            <td>
-                                <i class="flaticon-{{$value['extensao']}}-file-format text-primary"></i>
-                            </td>
-                            <td>
-                                {{$value['tamanho'] ? round(number_format($value['tamanho'], 2, '', '.')) . 'KB' : '<span class="badge">link</span>' }}
-                            </td>
-                            <td>
-                                {{$value['nome_grupo']}}
-                            </td>
-                            <td>
-                                {{date('d-m-Y H:i:s',$value['criado'])}}
-                            </td>
+                            <td>{{$value['nome_grupo']}}</td>
+                            <td>{{$value['nome']}}</td>
                             <td>
                                 <a href="{{$controller}}editar/id/{{$value['id']}}" class="btn btn-success">
-                                    <i class="fa fa-edit"></i>
+                                    <i class="fa fa-edit"></i> Editar
                                 </a>
                                 <a href="#"
                                    onclick="confirmar('Deseja REMOVER este registro?', '{{$controller}}eliminar/id/{{$value['id']}}')"
                                    class="btn btn-danger">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-trash"></i> Eliminar
                                 </a>
                             </td>
                         </tr>

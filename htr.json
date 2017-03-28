@@ -1,9 +1,9 @@
 {
     "database" : {
         "sgbd" : "mysql",
-        "host" : "localhost",
-        "dbname" : "softdoc",
+        "host" : "177.74.2.13",
+        "dbname" : "access",
         "username" : "root",
-        "password" : ""
+        "password" : "G=F1@02"
     }
 }

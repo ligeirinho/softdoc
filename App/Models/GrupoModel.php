@@ -1,7 +1,7 @@
 <?php
 /**
- * @model ClassificacaoModel
- * @created at 03-11-2016 12:50:59
+ * @model GrupoModel
+ * @created at 27-03-2017 21:04:36
  * - Criado Automaticamente pelo HTR Assist
  */
 
@@ -12,20 +12,18 @@ use HTR\Helpers\Mensagem\Mensagem as msg;
 use HTR\Helpers\Paginator\Paginator;
 use HTR\System\Security;
 
-class ClassificacaoModel extends ModelCRUD
+class GrupoModel extends ModelCRUD
 {
-    use \App\Validators\ClassificacaoValidatorTrait;
+    use \App\Validators\GrupoValidatorTrait;
 
     /**
      * Entidade padrão do Model
      */
-    protected $entidade = 'Antiga_classificacao_old';
+    protected $entidade = 'softdoc_grupo';
     protected $id;
-    protected $nomeClassificacao;
-    protected $departamento;
+    protected $nomeGrupo;
     protected $criado;
     protected $alterado;
-    protected $usuarioId;
 
     private $resultadoPaginator;
     private $navePaginator;
@@ -50,7 +48,7 @@ class ClassificacaoModel extends ModelCRUD
     }
     
     /**
-     * Método uaso para retornar todos os dados de classificação de acordo com o departamento do usuário.
+     * Método usado para retornar todos os dados de grupo de acordo com o usuário.
      */
     public function returnClassificacao($user){
         $query = "SELECT 
@@ -77,8 +75,12 @@ class ClassificacaoModel extends ModelCRUD
             'entidade' => $this->entidade,
             'pagina' => $pagina,
             'maxResult' => 20,
+            // USAR QUANDO FOR PARA DEMONSTRAR O RESULTADO DE UMA PESQUISA
+            //'orderBy' => 'nome ASC',
+            //'where' => 'nome LIKE ?',
+            //'bindValue' => [0 => '%MONTEIRO%']
         ];
-        
+
         // Instacia o Helper que auxilia na paginação de páginas
         $paginator = new Paginator($dados);
         // Resultado da consulta
@@ -86,7 +88,7 @@ class ClassificacaoModel extends ModelCRUD
         // Links para criação do menu de navegação da paginação @return array
         $this->navePaginator = $paginator->getNaveBtn();
     }
-
+    
     public function paginatorUser($pagina, $user)
     {
         /**
@@ -112,6 +114,7 @@ class ClassificacaoModel extends ModelCRUD
         $this->navePaginator = $paginator->getNaveBtn();
     }
 
+
     /**
      * Acessivel para o Controller coletar os resultados
      */
@@ -127,25 +130,23 @@ class ClassificacaoModel extends ModelCRUD
     {
         return $this->navePaginator;
     }
-    
 
     /**
      * Método responsável por salvar os registros
      */
-    public function novo($user)
+    public function novo()
     {
         $token = new Security();
         $token->checkToken();
 
         // Valida dados
-        $this->validateAll($user);
+        $this->validateAll();
         // Verifica se há registro igual e evita a duplicação
         $this->notDuplicate();
 
        $dados = [
-          'nome_classificacao' => $this->getNomeClassificacao(),
-          'departamento' => $this->getDepartamento(),
-          'criado' => $this->getCriado(),
+          'nome_grupo' => $this->getNomeGrupo(),
+          'criado' => $this->getCriado()
         ];
 
         if ($this->insert($dados)) {
@@ -156,19 +157,19 @@ class ClassificacaoModel extends ModelCRUD
     /**
      * Método responsável por alterar os registros
      */
-    public function editar($user)
+    public function editar()
     {
         $token = new Security();
         $token->checkToken();
 
         // Valida dados
-        $this->validateAll($user);
+        $this->validateAll();
         // Verifica se há registro igual e evita a duplicação
         $this->notDuplicate();
 
        $dados = [
-          'nome_classificacao' => $this->getNomeClassificacao(),
-          'departamento' => $this->getDepartamento(),
+          'nome_grupo' => $this->getNomeGrupo(),
+          'criado' => $this->getCriado(),
           'alterado' => $this->getAlterado(),
         ];
 
@@ -183,7 +184,7 @@ class ClassificacaoModel extends ModelCRUD
     public function remover($id)
     {
         if ($this->delete($id)) {
-            header('Location: ' . APPDIR . 'classificacao/visualizar/');
+            header('Location: ' . APPDIR . 'Grupo/visualizar/');
         }
     }
 
@@ -192,21 +193,20 @@ class ClassificacaoModel extends ModelCRUD
      */
     private function notDuplicate()
     {
-        // Não deixa duplicar os valores do campo nome_classificacao
+        // Não deixa duplicar os valores do campo nome_grupo
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
                 ->setFilters()
                 ->where('id', '!=', $this->getId())
                 ->whereOperator('AND')
-                ->where('nome_classificacao', '=' , $this->getNomeClassificacao());
+                ->where('nome_grupo', '=' , $this->getNomeGrupo());
         $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
 
         if ($result) {
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
                 . '<strong>Classificação</strong>.'
-                . '<script>focusOn("nome_classificacao")</script>', 'warning');
+                . '<script>focusOn("nome_grupo")</script>', 'warning');
         }
-        
         // Não deixa duplicar os valores do campo criado
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
@@ -240,19 +240,17 @@ class ClassificacaoModel extends ModelCRUD
     /*
      * Validação dos Dados enviados pelo formulário
      */
-    private function validateAll($user)
+    private function validateAll()
     {
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
-        $this->setNomeClassificacao(filter_input(INPUT_POST, 'nome_classificacao'));
-        $this->setDepartamento($user['departamento']);
-        $this->setCriado(time());
-        $this->setAlterado(time());
+        $this->setNomeGrupo(filter_input(INPUT_POST, 'nome_grupo'));
+        $this->setCriado(filter_input(INPUT_POST, 'criado'));
+        $this->setAlterado(filter_input(INPUT_POST, 'alterado'));
 
         // Inicia a Validação dos dados
         $this->validateId();
-        $this->validateNomeClassificacao();
-        $this->validateDepartamento();
+        $this->validateNomeGrupo();
         $this->validateCriado();
         $this->validateAlterado();
     }
@@ -263,13 +261,16 @@ class ClassificacaoModel extends ModelCRUD
         return $this;
     }
     
-    public function returnAllClassificacaoByUser($user)
+    public function returnAllGroupByUser($user)
     {
-        // Não deixa duplicar os valores do campo criado
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-            ->setFields(['id', 'nome_classificacao'])
-            ->setFilters()
-            ->where('departamento', '=', $user['departamento']);
-        return $this->db->execute()->fetchAll(\PDO::FETCH_ASSOC);
+        $query = "SELECT grp.id, grp.nome_grupo "
+                . "FROM `softdoc_user_has_group` as uhg "
+                . "INNER JOIN softdoc_grupo as grp ON grp.id = uhg.grupo_id "
+                . "AND uhg.user_id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$user['id']]);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        
+        return $result;
     }
 }

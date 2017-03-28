@@ -1,12 +1,12 @@
 <!--
- * @view documentos/form_novo.blade.php
- * @created at 03-11-2016 12:49:38
+ * @view Logdocumentos/form_novo.blade.php
+ * @created at 27-03-2017 21:02:00
  * - Criado Automaticamente pelo HTR Assist
  -->
 
 @extends('layout.default')
 
-@section('title', 'Inserção de Documentos')
+@section('title', 'Inserção de Logdocumentos')
 
 @section('content')
 <!-- Page Content -->
@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h4 class="page-header">Formulário de cadastro de Documentos</h4>
+                <h4 class="page-header">Formulário de cadastro de Logdocumentos</h4>
                 
             </div>
             <!-- /.col-lg-12 -->
@@ -35,51 +35,59 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Título</label>
-                                    <input type="text"
-                                           id="titulo"
-                                           name="titulo"
-                                           placeholder="Título"
-                                           class="form-control"
-                                           maxlength="70"
-                                           required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>Grupo</label>
+                                    <label>Documento</label>
                                     <select 
-                                           id="grupo"
-                                           name="grupo"
+                                           id="documento_id"
+                                           name="documento_id"
                                            class="form-control"
                                            required>
-                                           @foreach ($resultGrupos as $value)
+                                           @foreach ($resultSoftdocDocumentos as $value)
                                            <option value="{{$value['id']}}">
-                                               {{$value['nome_grupo']}}
+                                               {{$value['id']}}
                                            </option>
                                            @endforeach
                                     </select>
                                 </div>
-                                
+                                <div class="form-group">
+                                    <label>AcaoId</label>
+                                    <select 
+                                           id="acao_id"
+                                           name="acao_id"
+                                           class="form-control"
+                                           required>
+                                           @foreach ($resultSoftdocAcao as $value)
+                                           <option value="{{$value['id']}}">
+                                               {{$value['id']}}
+                                           </option>
+                                           @endforeach
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Opções de publicação</label>
-                                    <input type="radio" name="change_publicacao" value="arquivo" class="change_publicacao" checked=""> Arquivo |
-                                    <input type="radio" name="change_publicacao" value="link" class="change_publicacao"> Link
+                                    <label>UserId</label>
+                                    <select 
+                                           id="user_id"
+                                           name="user_id"
+                                           class="form-control"
+                                           required>
+                                           @foreach ($resultUsers as $value)
+                                           <option value="{{$value['id']}}">
+                                               {{$value['id']}}
+                                           </option>
+                                           @endforeach
+                                    </select>
                                 </div>
-                                <div class="form-group set-arquivo">
-                                    <label>Arquivo para publicação</label>
-                                    <input type="file" name="arquivo" class="form-control">
-                                </div>
-
-                                <div class="form-group set-link" style="display: none">
-                                    <label>Link de arquivo externo</label>
-                                    <input type="url"
-                                           id="link"
-                                           name="link"
-                                           placeholder="URL do arquivo externo"
-                                           class="form-control">
+                                <div class="form-group">
+                                    <label>Criado</label>
+                                    <input type="text"
+                                           id="criado"
+                                           name="criado"
+                                           placeholder="Criado"
+                                           class="form-control"
+                                           maxlength="15"
+                                           required>
                                 </div>
 
                                 <div class="form-group">
@@ -101,23 +109,4 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
-@endsection
-
-@section('scripts')
-
-    $('.change_publicacao').click(function() {
-
-        var value = $(this).val();
-
-        if (value == 'arquivo') {
-            $('.set-link').hide();
-            $('.set-arquivo').show();
-        }
-
-        if (value == 'link') {
-            $('.set-link').show();
-            $('.set-arquivo').hide();
-        }
-    });
-
 @endsection

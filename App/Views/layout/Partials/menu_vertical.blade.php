@@ -4,7 +4,7 @@
 
         <ul class="nav side-menu">
             <li>
-				<a href="{{APPDIR}}Index/dashboard/"><i class="fa fa-home"></i> Home</a>
+		<a href="{{APPDIR}}Index/dashboard/"><i class="fa fa-home"></i> Home</a>
             </li>
             <li>
                 <a><i class="fa fa-book fa-fw"></i> Documentos<span class="fa fa-chevron-down"></span></a>
@@ -15,18 +15,17 @@
                 <!-- /.child_menu -->
             </li>
             <li>
-                <a><i class="fa fa-list fa-fw"></i> Classificação<span class="fa fa-chevron-down"></span></a>
+                <a><i class="fa fa-list fa-fw"></i> Grupos de Usuários<span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{APPDIR}}classificacao/">Gerenciar Classificação</a></li>
-                    <li><a href="{{APPDIR}}classificacao/novo/">Nova Classificação</a></li>
+                    <li><a href="{{APPDIR}}grouphasuser/">Gerenciar Usuário</a></li>
                 </ul>
                 <!-- /.child_menu -->
             </li>
             <li>
-                <a><i class="fa fa-bank fa-fw"></i> Departamento<span class="fa fa-chevron-down"></span></a>
+                <a><i class="fa fa-bank fa-fw"></i> Grupos<span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{APPDIR}}departamento/">Gerenciar Departamento</a></li>
-                    <li><a href="{{APPDIR}}departamento/novo/">Novo Departamento</a></li>
+                    <li><a href="{{APPDIR}}grupo/">Gerenciar Grupos</a></li>
+                    <li><a href="{{APPDIR}}grupo/novo/">Novo Departamento</a></li>
                 </ul>
                 <!-- /.child_menu -->
             </li>
@@ -35,8 +34,8 @@
                     <i class="fa fa-users fa-fw"></i> Usuários<span class="fa fa-chevron-down"></span>
                 </a>
                 <ul class="nav child_menu">
-                    <li><a href="{{APPDIR}}auth/">Gerenciar Usuários</a></li>
-                    <li><a href="{{APPDIR}}auth/novo/">Novo Registro</a></li>
+                    <li><a href="{{APPDIR}}usuario/">Gerenciar Usuários</a></li>
+                    <li><a href="{{APPDIR}}usuario/novo/">Novo Registro</a></li>
                 </ul>
                 <!-- /.child_menu -->
             </li>

@@ -16,7 +16,7 @@ class RankingsModel extends ModelCRUD
     /**
      * Entidade padrão do Model
      */
-    protected $entidade = 'rankings';
+    protected $entidade = 'softdoc_rankings';
 
     /**
      * @param \PDO $pdo Recebe uma instância do PDO
@@ -55,8 +55,8 @@ class RankingsModel extends ModelCRUD
     public function returnAllRankingByClassificacao($classificacaoId)
     {
         $arrRanking = [];
-        $queryString = 'SELECT doc.id, COUNT(ran.id) AS ranking FROM `documentos` AS doc
-            INNER JOIN rankings AS ran ON ran.documento_id = doc.id
+        $queryString = 'SELECT doc.id, COUNT(ran.id) AS ranking FROM `softdoc_documentos` AS doc
+            INNER JOIN softdoc_rankings AS ran ON ran.documento_id = doc.id
             WHERE doc.classificacao_id = ?
             GROUP BY doc.id';
         $stmt = $this->pdo->prepare($queryString);

@@ -1,7 +1,7 @@
 <?php
 /**
- * @model DepartamentoModel
- * @created at 03-11-2016 12:52:10
+ * @model ForumModel
+ * @created at 27-03-2017 21:02:24
  * - Criado Automaticamente pelo HTR Assist
  */
 
@@ -12,16 +12,19 @@ use HTR\Helpers\Mensagem\Mensagem as msg;
 use HTR\Helpers\Paginator\Paginator;
 use HTR\System\Security;
 
-class DepartamentoModel extends ModelCRUD
+class ForumModel extends ModelCRUD
 {
-    use \App\Validators\DepartamentoValidatorTrait;
+    use \App\Validators\ForumValidatorTrait;
 
     /**
      * Entidade padrão do Model
      */
-    protected $entidade = 'bas_departamento';
+    protected $entidade = 'softdoc_forum';
     protected $id;
-    protected $nomeDepartamento;
+    protected $documentosId;
+    protected $userId;
+    protected $texto;
+    protected $criado;
 
     private $resultadoPaginator;
     private $navePaginator;
@@ -57,7 +60,7 @@ class DepartamentoModel extends ModelCRUD
             'maxResult' => 20,
             // USAR QUANDO FOR PARA DEMONSTRAR O RESULTADO DE UMA PESQUISA
             //'orderBy' => 'nome ASC',
-            'where' => 'ativo = 1',
+            //'where' => 'nome LIKE ?',
             //'bindValue' => [0 => '%MONTEIRO%']
         ];
 
@@ -100,7 +103,10 @@ class DepartamentoModel extends ModelCRUD
         $this->notDuplicate();
 
        $dados = [
-          'nome_departamento' => $this->getNomeDepartamento(),
+          'documentos_id' => $this->getDocumentosId(),
+          'user_id' => $this->getUserId(),
+          'texto' => $this->getTexto(),
+          'criado' => $this->getCriado(),
         ];
 
         if ($this->insert($dados)) {
@@ -122,7 +128,10 @@ class DepartamentoModel extends ModelCRUD
         $this->notDuplicate();
 
        $dados = [
-          'nome_departamento' => $this->getNomeDepartamento(),
+          'documentos_id' => $this->getDocumentosId(),
+          'user_id' => $this->getUserId(),
+          'texto' => $this->getTexto(),
+          'criado' => $this->getCriado(),
         ];
 
         if ($this->update($dados, $this->getId())) {
@@ -136,7 +145,7 @@ class DepartamentoModel extends ModelCRUD
     public function remover($id)
     {
         if ($this->delete($id)) {
-            header('Location: ' . APPDIR . 'departamento/visualizar/');
+            header('Location: ' . APPDIR . 'Forum/visualizar/');
         }
     }
 
@@ -145,19 +154,61 @@ class DepartamentoModel extends ModelCRUD
      */
     private function notDuplicate()
     {
-        // Não deixa duplicar os valores do campo nome_departamento
+        // Não deixa duplicar os valores do campo documentos_id
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
                 ->setFilters()
                 ->where('id', '!=', $this->getId())
                 ->whereOperator('AND')
-                ->where('nome_departamento', '=' , $this->getNomeDepartamento());
+                ->where('documentos_id', '=' , $this->getDocumentosId());
         $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
 
         if ($result) {
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Departamento</strong>.'
-                . '<script>focusOn("nome_departamento")</script>', 'warning');
+                . '<strong>Documento</strong>.'
+                . '<script>focusOn("documentos_id")</script>', 'warning');
+        }
+        // Não deixa duplicar os valores do campo user_id
+        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
+                ->setFields(['id'])
+                ->setFilters()
+                ->where('id', '!=', $this->getId())
+                ->whereOperator('AND')
+                ->where('user_id', '=' , $this->getUserId());
+        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result) {
+            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
+                . '<strong>user_id</strong>.'
+                . '<script>focusOn("user_id")</script>', 'warning');
+        }
+        // Não deixa duplicar os valores do campo texto
+        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
+                ->setFields(['id'])
+                ->setFilters()
+                ->where('id', '!=', $this->getId())
+                ->whereOperator('AND')
+                ->where('texto', '=' , $this->getTexto());
+        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result) {
+            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
+                . '<strong>Texto</strong>.'
+                . '<script>focusOn("texto")</script>', 'warning');
+        }
+        // Não deixa duplicar os valores do campo criado
+        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
+                ->setFields(['id'])
+                ->setFilters()
+                ->where('id', '!=', $this->getId())
+                ->whereOperator('AND')
+                ->where('criado', '=' , $this->getCriado());
+        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result) {
+            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
+                . '<strong>Criado</strong>.'
+                . '<script>focusOn("criado")</script>', 'warning');
         }
     }
 
@@ -168,11 +219,17 @@ class DepartamentoModel extends ModelCRUD
     {
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
-        $this->setNomeDepartamento(filter_input(INPUT_POST, 'nome_departamento'));
+        $this->setDocumentosId(filter_input(INPUT_POST, 'documentos_id'));
+        $this->setUserId(filter_input(INPUT_POST, 'user_id'));
+        $this->setTexto(filter_input(INPUT_POST, 'texto'));
+        $this->setCriado(filter_input(INPUT_POST, 'criado'));
 
         // Inicia a Validação dos dados
         $this->validateId();
-        $this->validateNomeDepartamento();
+        $this->validateDocumentosId();
+        $this->validateUserId();
+        $this->validateTexto();
+        $this->validateCriado();
     }
 
     private function setId($value)
