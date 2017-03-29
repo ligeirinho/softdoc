@@ -7,7 +7,7 @@ namespace App\Controllers;
 
 use HTR\System\ControllerAbstract as Controller;
 use HTR\Interfaces\ControllerInterface as CtrlInterface;
-use App\Models\ClassificacaoModel as Classificacao;
+use App\Models\GrupoModel as Grupo;
 use HTR\Helpers\Access\Access;
 use App\Models\RankingsModel;
 use App\Models\DocumentosModel as Documentos;
@@ -41,8 +41,10 @@ class IndexController extends Controller implements CtrlInterface
     
     public function dashboardAction()
     {
-        $classificacao = new Classificacao($this->access->pdo);
-        $this->view['resultClassificacao'] = $classificacao->returnClassificacao($this->view['userLoggedIn']);
+        $grupo = new Grupo($this->access->pdo);
+        
+        $this->view['resultGrupos'] = $grupo->returnGruposByUser($this->view['userLoggedIn']);
+        
         //Renderiza a view dashboard
         $this->render('Index.dashboard');
     }
@@ -56,13 +58,13 @@ class IndexController extends Controller implements CtrlInterface
         }
     }
     
-    public function filtroCategoriaAction(){        
+    public function filtroGruposAction(){        
         $documentos = new Documentos($this->access->pdo);
         $ranking = new RankingsModel($this->access->pdo);
         
         $find = $this->getParam('id');
 
-        $documentos->filterByCategoria($this->getParam('pagina'), $find);
+        $documentos->filterByGrupo($this->getParam('pagina'), $find);
         $this->view['result'] = $documentos->getResultadoPaginator();
         $this->view['btn'] = $documentos->getNavePaginator();
         
@@ -80,8 +82,8 @@ class IndexController extends Controller implements CtrlInterface
     
     public function acessoNegadoAction()
     {
-		$this->view['uri'] = $this->auth->ruleUri();
-		dump($this->auth->usersExtractor()->responseArray());
+        $this->view['uri'] = $this->auth->ruleUri();
+        dump($this->auth->usersExtractor()->responseArray());
         $this->render('Index.acesso_negado');
     }
 }

@@ -57,7 +57,7 @@ class RankingsModel extends ModelCRUD
         $arrRanking = [];
         $queryString = 'SELECT doc.id, COUNT(ran.id) AS ranking FROM `softdoc_documentos` AS doc
             INNER JOIN softdoc_rankings AS ran ON ran.documento_id = doc.id
-            WHERE doc.classificacao_id = ?
+            WHERE doc.grupo_id = ?
             GROUP BY doc.id';
         $stmt = $this->pdo->prepare($queryString);
         $stmt->execute([$classificacaoId]);

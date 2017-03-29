@@ -4,6 +4,8 @@
 <!-- Custom CSS -->
 <link href="{{DIRCSS}}gentelella/css/custom.min.css" rel="stylesheet">
 
+<link href="{{DIRCSS}}jquery.dataTables.min.css" rel="stylesheet">
+
 <!-- Custom Fonts -->
 <link href="{{ATTACH}}font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 

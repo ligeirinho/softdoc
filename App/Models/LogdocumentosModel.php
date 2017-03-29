@@ -92,25 +92,18 @@ class LogdocumentosModel extends ModelCRUD
     /**
      * Método responsável por salvar os registros
      */
-    public function novo()
+    public function novo($documentoId, $acaoId, $userId)
     {
-        $token = new Security();
-        $token->checkToken();
-
-        // Valida dados
-        $this->validateAll();
-        // Verifica se há registro igual e evita a duplicação
-        $this->notDuplicate();
-
+       
        $dados = [
-          'documento_id' => $this->getDocumentoId(),
-          'acao_id' => $this->getAcaoId(),
-          'user_id' => $this->getUserId(),
-          'criado' => $this->getCriado(),
+          'documento_id' => $documentoId,
+          'acao_id' => $acaoId,
+          'user_id' => $userId,
+          'criado' => time(),
         ];
 
         if ($this->insert($dados)) {
-            msg::showMsg('111', 'success');
+            return true;
         }
     }
 

@@ -22,8 +22,7 @@
                             <th>Ranking</th>
                             <th>Extensão</th>
                             <th>Tamanho</th>
-                            <th>Departamento</th>
-                            <th>Classificação</th>
+                            <th>Grupo</th>
                             <th>Criado</th>
                             <th></th>
                         </tr>
@@ -32,11 +31,11 @@
                         @foreach ($result as $value)
                         <tr>
                             <td>
-                                <a href="{{APPDIR}}index/ler/id/{{$value['id']}}">
+                                <a href="{{APPDIR}}index/ler/id/{{$value['id']}}" target="_blank">
                                     <i class='fa fa-external-link'></i> {{$value['titulo']}}
                                 </a>
                             </td>
-                            <td>{{$value['name']}}</td>
+                            <td>{{$value['nome']}}</td>
                             <td>
                                 <?php
                                 $ran = false;
@@ -54,11 +53,10 @@
                                 <i class="flaticon-{{$value['extensao']}}-file-format text-primary"></i>
                             </td>
                             <td><?= $value['tamanho'] ? round(number_format($value['tamanho'], 2, '', '.')) . 'KB' : '<span class="badge">link</span>'; ?></td>
-                            <td>{{$value['departamento']}}</td>
-                            <td>{{$value['classificacao']}}</td>
+                            <td>{{$value['nome_grupo']}}</td>
                             <td>{{date('d-m-Y H:i:s',$value['criado'])}}</td>
                             <td>
-                                <a href="{{$controller}}ler/id/{{$value['id']}}" class="btn btn-success">
+                                <a href="{{$controller}}ler/id/{{$value['id']}}" class="btn btn-success" target="_blank">
                                     <i class="fa fa-eye"></i> Ler
                                 </a>
                             </td>

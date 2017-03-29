@@ -19,21 +19,26 @@
                 <a href="{{$controller}}novo/" class="btn btn-info">
                     <i class="fa fa-plus"></i> Novo Registro
                 </a>
-                <table class="table">
+                <table class="table" id="tableGrupo" class="display" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Classificação</th>
                             <th>Criado</th>
-                            <th>Alterado</th>
                             <th></th>
                         </tr>
                     </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Classificação</th>
+                            <th>Criado</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                     <tbody>
                         @foreach ($result as $value)
                         <tr>
                             <td>{{$value['nome_grupo']}}</td>
-                            <td>{{$value['criado']}}</td>
-                            <td>{{$value['alterado']}}</td>
+                            <td>{{date('d-m-Y H:i:s',$value['criado'])}}</td>
                             <td>
                                 <a href="{{$controller}}editar/id/{{$value['id']}}" class="btn btn-success">
                                     <i class="fa fa-edit"></i> Editar

@@ -50,18 +50,12 @@ class GrupoModel extends ModelCRUD
     /**
      * Método usado para retornar todos os dados de grupo de acordo com o usuário.
      */
-    public function returnClassificacao($user){
-        $query = "SELECT 
-                COUNT(doc.id) AS quantidade, cl.id AS classificacao_id, 
-                cl.nome_classificacao, dep.nome_departamento AS departamento
-            FROM `Antiga_documentos_old` AS doc
-                INNER JOIN Antiga_classificacao_old AS cl ON cl.departamento = ?
-                INNER JOIN bas_departamento AS dep ON dep.id = ?
-                INNER JOIN users ON users.id = doc.user_id AND users.id = ?
-                WHERE doc.departamento = ?
-            GROUP BY cl.nome_classificacao ORDER BY cl.nome_classificacao";
+    public function returnGruposByUser($user){
+        $query = "SELECT grupo.id, grupo.nome_grupo 
+                FROM `softdoc_user_has_group` as uhg
+                INNER JOIN softdoc_grupo as grupo ON grupo.id = uhg.grupo_id AND user_id = ?";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$user['departamento'],$user['departamento'],$user['id'],$user['departamento']]);
+        $stmt->execute([$user['id']]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
@@ -75,10 +69,6 @@ class GrupoModel extends ModelCRUD
             'entidade' => $this->entidade,
             'pagina' => $pagina,
             'maxResult' => 20,
-            // USAR QUANDO FOR PARA DEMONSTRAR O RESULTADO DE UMA PESQUISA
-            //'orderBy' => 'nome ASC',
-            //'where' => 'nome LIKE ?',
-            //'bindValue' => [0 => '%MONTEIRO%']
         ];
 
         // Instacia o Helper que auxilia na paginação de páginas
@@ -169,7 +159,6 @@ class GrupoModel extends ModelCRUD
 
        $dados = [
           'nome_grupo' => $this->getNomeGrupo(),
-          'criado' => $this->getCriado(),
           'alterado' => $this->getAlterado(),
         ];
 
@@ -207,34 +196,6 @@ class GrupoModel extends ModelCRUD
                 . '<strong>Classificação</strong>.'
                 . '<script>focusOn("nome_grupo")</script>', 'warning');
         }
-        // Não deixa duplicar os valores do campo criado
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('criado', '=' , $this->getCriado());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Criado</strong>.'
-                . '<script>focusOn("criado")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo alterado
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('alterado', '=' , $this->getAlterado());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>Alterado</strong>.'
-                . '<script>focusOn("alterado")</script>', 'warning');
-        }
     }
 
     /*
@@ -245,14 +206,11 @@ class GrupoModel extends ModelCRUD
         // Seta todos os valores
         $this->setId(filter_input(INPUT_POST, 'id'));
         $this->setNomeGrupo(filter_input(INPUT_POST, 'nome_grupo'));
-        $this->setCriado(filter_input(INPUT_POST, 'criado'));
-        $this->setAlterado(filter_input(INPUT_POST, 'alterado'));
+        $this->setCriado(time());
+        $this->setAlterado(time());
 
         // Inicia a Validação dos dados
-        $this->validateId();
         $this->validateNomeGrupo();
-        $this->validateCriado();
-        $this->validateAlterado();
     }
 
     private function setId($value)

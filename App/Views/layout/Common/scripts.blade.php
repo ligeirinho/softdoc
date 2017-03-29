@@ -11,8 +11,18 @@
 <!-- Custom Theme JavaScript -->
 <script src="{{DIRJS_}}gentelella/js/custom.js"></script>
 
+<script src="{{DIRJS_}}jquery.dataTables.min.js"></script>
+
+<script src="{{DIRJS_}}jquery-1.12.4.js"></script>
+
 <!-- Script padrão de envio de formulário -->
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#tableGrupo').DataTable( {
+            "order": [[ 3, "desc" ]]
+        } );
+    } );
+    
     function resetForm(){
         document.getElementById("form").reset();
         setInterval("clearMsg()",2000);
@@ -32,7 +42,7 @@
             window.location = url;
         }
     }
-
+    
     (function () {
     var status = $(".resultado");
 

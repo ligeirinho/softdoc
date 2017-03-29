@@ -12,6 +12,7 @@ use HTR\Helpers\Mensagem\Mensagem as msg;
 use HTR\Helpers\Paginator\Paginator;
 use HTR\System\Security;
 use PHPMailer;
+use App\Models\LogdocumentosModel as Log;
 
 class DocumentosModel extends ModelCRUD
 {
@@ -136,24 +137,21 @@ class DocumentosModel extends ModelCRUD
      * @param int $find
      * @return array
      */
-    public function filterByCategoria($pagina, $find)
+    public function filterByGrupo($pagina, $find)
     {
         /**
          * Preparando as diretrizes da consulta
          */
         $dados = [
             'pdo' => $this->pdo,
-            'select' => ' softdoc_documentos.id, titulo, users.nome, extensao, '
-            . 'tamanho, dept.nome_departamento as departamento, softdoc_documentos.criado, '
-            . 'cls.nome_classificacao as classificacao',
-            'entidade' => '`softdoc_documentos`
-                INNER JOIN users ON users.id=user_id
-                INNER JOIN bas_departamento as dept ON dept.id = users.departamento
-                INNER JOIN softdoc_classificacao as cls ON cls.id = classificacao_id',
-            'where' => 'classificacao_id = ?',
+            'select' => 'doc.id, doc.titulo, users.nome, doc.extensao, doc.tamanho, doc.link, grupo.nome_grupo, doc.criado ',
+            'entidade' => $this->entidade 
+                .' as doc INNER JOIN users ON users.id = doc.user_id
+                  INNER JOIN softdoc_grupo as grupo ON grupo.id = doc.grupo_id',
+            'where'=> 'doc.grupo_id = ?',
             'bindValue' => [$find],
             'pagina' => $pagina,
-            'maxResult' => 20
+            'maxResult' => 20,
         ];
 
         // Instacia o Helper que auxilia na paginação de páginas
@@ -282,8 +280,11 @@ class DocumentosModel extends ModelCRUD
         ];
 
         if ($this->insert($dados)) {
-
             $id = $this->pdo->lastInsertId();
+
+            $log = new Log($this->pdo);
+          
+            $log->novo($id, 1, $dados['user_id']);
             $this->upload($_FILES, $id);
 
             msg::showMsg('111', 'success');
@@ -316,6 +317,12 @@ class DocumentosModel extends ModelCRUD
         $this->upload($_FILES, $this->getId());
 
         if ($this->update($dados, $this->getId())) {
+            
+            $id = $this->pdo->lastInsertId();
+            $log = new Log($this->pdo);
+            
+            $log->novo($id, 2, $dados['user_id']);
+            
             msg::showMsg('001', 'success');
         }
     }

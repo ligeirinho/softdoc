@@ -52,7 +52,7 @@
                                 <i class="flaticon-{{$value['extensao']}}-file-format text-primary"></i>
                             </td>
                             <td>
-                                {{$value['tamanho'] ? round(number_format($value['tamanho'], 2, '', '.')) . 'KB' : '<span class="badge">link</span>' }}
+                                <?= $value['tamanho'] ? round(number_format($value['tamanho'], 2, '', '.')) . 'KB' : '<span class="badge">link</span>' ?>
                             </td>
                             <td>
                                 {{$value['nome_grupo']}}

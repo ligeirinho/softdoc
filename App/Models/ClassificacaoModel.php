@@ -53,17 +53,16 @@ class ClassificacaoModel extends ModelCRUD
      * Método uaso para retornar todos os dados de classificação de acordo com o departamento do usuário.
      */
     public function returnClassificacao($user){
-        $query = "SELECT 
-                COUNT(doc.id) AS quantidade, cl.id AS classificacao_id, 
-                cl.nome_classificacao, dep.nome_departamento AS departamento
-            FROM `Antiga_documentos_old` AS doc
-                INNER JOIN Antiga_classificacao_old AS cl ON cl.departamento = ?
-                INNER JOIN bas_departamento AS dep ON dep.id = ?
-                INNER JOIN users ON users.id = doc.user_id AND users.id = ?
-                WHERE doc.departamento = ?
-            GROUP BY cl.nome_classificacao ORDER BY cl.nome_classificacao";
+        $query = "SELECT
+                    COUNT(doc.id) AS quantidade,
+                    uhg.grupo_id,
+                    grupo.nome_grupo
+                FROM
+                    softdoc_documentos AS doc
+                INNER JOIN softdoc_user_has_group as uhg ON doc.grupo_id = uhg.grupo_id AND uhg.user_id = ?
+                INNER JOIN softdoc_grupo AS grupo ON grupo.id = uhg.grupo_id";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$user['departamento'],$user['departamento'],$user['id'],$user['departamento']]);
+        $stmt->execute([$user['id']]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 

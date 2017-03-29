@@ -41,39 +41,17 @@
                                            name="nome_grupo"
                                            placeholder="Classificação"
                                            class="form-control"
-                                           maxlength="40"
+                                           maxlength="150"
                                            required>
                                 </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Criado</label>
-                                    <input type="text"
-                                           id="criado"
-                                           name="criado"
-                                           placeholder="Criado"
-                                           class="form-control"
-                                           maxlength="15"
-                                           required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Alterado</label>
-                                    <input type="text"
-                                           id="alterado"
-                                           name="alterado"
-                                           placeholder="Alterado"
-                                           class="form-control"
-                                           maxlength="15"
-                                           >
-                                </div>
-
+                                
                                 <div class="form-group">
                                     <br>
                                     <button class="btn btn-primary"><i class="fa fa-check"></i> Registrar</button>
                                     <a href="{{$controller}}" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Voltar</a>
                                 </div>
                             </div>
+
                         </div>
                         </form>
                     </div>

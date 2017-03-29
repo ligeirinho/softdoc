@@ -151,7 +151,7 @@ class GrouphasuserModel extends ModelCRUD
         $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
                 ->setFields(['id'])
                 ->setFilters()
-                ->where('id', '!=', $this->getId())
+                ->where('user_id', '!=', $this->getUserId())
                 ->whereOperator('AND')
                 ->where('grupo_id', '=' , $this->getGrupoId());
         $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
@@ -160,20 +160,6 @@ class GrouphasuserModel extends ModelCRUD
             msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
                 . '<strong>grupo_id</strong>.'
                 . '<script>focusOn("grupo_id")</script>', 'warning');
-        }
-        // Não deixa duplicar os valores do campo user_id
-        $this->db->instruction(new \HTR\Database\Instruction\Select($this->entidade))
-                ->setFields(['id'])
-                ->setFilters()
-                ->where('id', '!=', $this->getId())
-                ->whereOperator('AND')
-                ->where('user_id', '=' , $this->getUserId());
-        $result = $this->db->execute()->fetch(\PDO::FETCH_ASSOC);
-
-        if ($result) {
-            msg::showMsg('Já existe um registro com este(s) caractere(s) no campo '
-                . '<strong>user_id</strong>.'
-                . '<script>focusOn("user_id")</script>', 'warning');
         }
     }
 

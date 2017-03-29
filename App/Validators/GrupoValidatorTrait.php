@@ -26,7 +26,7 @@ trait GrupoValidatorTrait
 
     protected function validateNomeGrupo()
     {
-        $value = v::stringType()->notEmpty()->length(1, 40)->validate($this->getNomeGrupo());
+        $value = v::stringType()->notEmpty()->length(1, 90)->validate($this->getNomeGrupo());
         if (!$value) {
             msg::showMsg('O campo Classificação deve ser preenchido corretamente.'
                 . '<script>focusOn("nome_grupo");</script>', 'danger');
